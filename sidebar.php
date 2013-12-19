@@ -12,7 +12,7 @@
 	<?php the_widget( 'Recentposts_thumbnail', 'title=Recent posts', $widget_args); ?>
 
 	<div class="widget sponsors">
-		<h3>Our sponsors</h3>
+		<h3><?php _e('Our sponsors', 'sight'); ?></h3>
 		<div class="widget-body">
 			<a href="#"><img src="<?php echo get_template_directory_uri(); ?>/example/sponsor01.jpg" width="200" height="125" alt=""/></a>
 			<a href="#"><img src="<?php echo get_template_directory_uri(); ?>/example/sponsor02.jpg" width="200" height="125" alt=""/></a>

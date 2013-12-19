@@ -3,16 +3,16 @@
 <?php if ( have_posts() ) : ?>
 
 	<div class="content-title">
-		Search Result <span>/</span> <?php the_search_query(); ?>
+		<?php _e('Search Result', 'sight'); ?> <span>/</span> <?php the_search_query(); ?>
 		<a href="javascript: void(0);" id="mode"<?php if (isset($_COOKIE['mode']) && $_COOKIE['mode'] == 'grid') echo ' class="flip"'; ?>></a>
 	</div>
 
 	<?php get_template_part('loop'); ?>
 
-<?php else : ?>
+<?php else: ?>
 
 	<div class="content-title">
-		Your search <strong><?php the_search_query(); ?></strong> did not match any documents
+		<?php printf(__('Your search <strong>%s</strong> did not match any documents', 'sight'), get_search_query()); ?>
 	</div>
 
 	<div class="entry">
@@ -21,7 +21,8 @@
 				<div class="search">
 					<form method="get" id="searchform" action="<?php echo home_url(); ?>">
 						<fieldset>
-							<input name="s" type="text" onfocus="if(this.value=='Search with some different keywords') this.value='';" onblur="if(this.value=='') this.value='Search with some different keywords';" value="Search with some different keywords" />
+	<?php $button = __('Search with some different keywords', 'sight'); ?>
+							<input name="s" type="text" onfocus="if(this.value=='<?php echo $button; ?>') this.value='';" onblur="if(this.value=='') this.value='<?php echo $button; ?>';" value="<?php echo $button; ?>" />
 							<button type="submit"></button>
 						</fieldset>
 					</form>
