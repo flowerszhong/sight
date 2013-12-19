@@ -691,7 +691,7 @@ function seo_title() {
 
 	# Search result ################################
 	if (is_search())
-	 $newtitle = "Search Result " . $s;
+		$newtitle = "Search Result ".get_search_query();
 
 	# Taxonomy #######################################
 	if (is_tax()) {
