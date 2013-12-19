@@ -16,7 +16,7 @@
 				<div class="post-meta">
 					<h1><?php the_title(); ?></h1>
 					<?php printf(__('by <span class="post-author"><a href="%s" title="Posts by %s">%s</a></span> on <span class="post-date">%s</span> &bull; <span>%s</span>', 'sight'),
-						get_author_posts_url( get_the_author_meta( 'ID' ) ),
+						get_author_posts_url(get_the_author_meta('ID')),
 						get_the_author(),
 						get_the_author(),
 						get_the_time('M j, Y'),

@@ -5,8 +5,8 @@
 	<?php $post = $posts[0]; // Hack. Set $post so that the_date() works. ?>
 		<?php /* If this is a category archive */ if (is_category()) { ?>
 		<?php printf('%s', single_cat_title('', false)); ?>
-		<?php /* If this is a tag archive */ } elseif( is_tag() ) { ?>
-		<?php printf(__('Posts tagged &quot;%s&quot;', 'sight'), single_tag_title('', false) ); ?>
+		<?php /* If this is a tag archive */ } elseif (is_tag()) { ?>
+		<?php printf(__('Posts tagged &quot;%s&quot;', 'sight'), single_tag_title('', false)); ?>
 		<?php /* If this is a daily archive */ } elseif (is_day()) { ?>
 		<?php printf(_c('Daily archive %s'), get_the_time('M j, Y')); ?>
 		<?php /* If this is a monthly archive */ } elseif (is_month()) { ?>
