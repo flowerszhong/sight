@@ -42,7 +42,7 @@ body {font: 62.5% Georgia, Geneva, "Times New Roman", times; background: #27292a
 
 .menu {width: 100px; padding-right: 30px; float: right;}
 .menu ul {margin-top: 35px;}
-.menu li {font-size: 11px; text-transform: uppercase;  margin: 6px 0;}
+.menu li {font-size: 11px; text-transform: uppercase; margin: 6px 0;}
 .menu a {color: #000; text-decoration: none;}
 .menu a:hover {text-decoration: underline;}
 

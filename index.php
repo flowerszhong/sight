@@ -1,14 +1,14 @@
 <?php get_header(); ?>
 
 <div class="content-title">
-    Latest entries
+	Latest entries
 	<a href="javascript: void(0);" id="mode"<?php if (isset($_COOKIE['mode']) && $_COOKIE['mode'] == 'grid') echo ' class="flip"'; ?>></a>
 </div>
 
 <?php query_posts(array(
-        'post__not_in' => $exl_posts,
-        'paged' => $paged,
-    )
+		'post__not_in' => $exl_posts,
+		'paged' => $paged,
+	)
 ); ?>
 
 <?php get_template_part('loop'); ?>
