@@ -26,7 +26,9 @@
 				<h2><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
 
 				<div class="post-meta">by <span class="post-author"><a href="<?php echo get_author_posts_url( get_the_author_meta( 'ID' ) ); ?>" title="Posts by <?php the_author(); ?>"><?php the_author(); ?></a></span> on <span
-						class="post-date"><?php the_time(__('M j, Y')) ?></span> &bull; <?php comments_popup_link(__('No Comments'), __('1 Comment'), __('% Comments'), '', __('Comments Closed') ); ?> <?php edit_post_link( __( 'Edit entry'), '&bull; '); ?></div>
+					class="post-date"><?php the_time('M j, Y'); ?></span> &bull; <?php comments_popup_link(__('No Comments', 'sight'), __('1 Comment', 'sight'), __('% Comments', 'sight'), '', __('Comments Closed', 'sight') ); ?>
+					<?php edit_post_link(__('Edit entry', 'sight'), '&bull; '); ?>
+				</div>
 				<div class="post-content"><?php if ( has_post_thumbnail() && function_exists('smart_excerpt') ) smart_excerpt(get_the_excerpt(), 50); else smart_excerpt(get_the_excerpt(), 150); ?></div>
 			</div>
 		</div>

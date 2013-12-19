@@ -16,20 +16,20 @@
 				<div class="post-meta">
 					<h1><?php the_title(); ?></h1>
 					by <span class="post-author"><a href="<?php echo get_author_posts_url( get_the_author_meta( 'ID' ) ); ?>" title="Posts by <?php the_author(); ?>"><?php the_author(); ?></a></span> on <span
-						class="post-date"><?php the_time(__('M j, Y')) ?></span> &bull; <span><?php the_time() ?></span> <?php edit_post_link( __( 'Edit entry'), '&bull; '); ?><a
-						href="#comments" class="post-comms"><?php comments_number(__('No Comments'), __('1 Comment'), __('% Comments'), '', __('Comments Closed') ); ?></a></div>
+						class="post-date"><?php the_time('M j, Y') ?></span> &bull; <span><?php the_time() ?></span> <?php edit_post_link( __( 'Edit entry', 'sight'), '&bull; '); ?><a
+						href="#comments" class="post-comms"><?php comments_number(__('No Comments', 'sight'), __('1 Comment', 'sight'), __('% Comments', 'sight'), '', __('Comments Closed', 'sight') ); ?></a></div>
 				<div class="post-content"><?php the_content(); ?></div>
-				<div class="post-footer"><?php the_tags(__('<strong>Tags: </strong>'), ', '); ?></div>
+				<div class="post-footer"><?php the_tags('<strong>'.__('Tags:', 'sight').' </strong>', ', '); ?></div>
 			</div>
 			<div class="post-navigation clear">
 				<?php
 					$prev_post = get_adjacent_post(false, '', true);
 					$next_post = get_adjacent_post(false, '', false); ?>
 					<?php if ($prev_post) : $prev_post_url = get_permalink($prev_post->ID); $prev_post_title = $prev_post->post_title; ?>
-						<a class="post-prev" href="<?php echo $prev_post_url; ?>"><em>Previous post</em><span><?php echo $prev_post_title; ?></span></a>
+						<a class="post-prev" href="<?php echo $prev_post_url; ?>"><em><?php _e('Previous post', 'sight'); ?></em><span><?php echo $prev_post_title; ?></span></a>
 					<?php endif; ?>
 					<?php if ($next_post) : $next_post_url = get_permalink($next_post->ID); $next_post_title = $next_post->post_title; ?>
-						<a class="post-next" href="<?php echo $next_post_url; ?>"><em>Next post</em><span><?php echo $next_post_title; ?></span></a>
+						<a class="post-next" href="<?php echo $next_post_url; ?>"><em><?php _e('Next post', 'sight'); ?></em><span><?php echo $next_post_title; ?></span></a>
 					<?php endif; ?>
 				<div class="line"></div>
 			</div>

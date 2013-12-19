@@ -10,8 +10,8 @@ function sight_setup() {
 	update_option('thumbnail_size_h', 290);
 	add_image_size( 'mini-thumbnail', 50, 50, true );
 	add_image_size( 'slide', 640, 290, true );
-	register_nav_menu('Navigation', __('Navigation'));
-	register_nav_menu('Top menu', __('Top menu'));
+	register_nav_menu('Navigation', __('Navigation', 'sight'));
+	register_nav_menu('Top menu', __('Top menu', 'sight'));
 }
 add_action( 'init', 'sight_setup' );
 
@@ -187,34 +187,34 @@ function options_page() {
 
 			<table class="form-table">
 				<tr valign="top">
-					<th scope="row"><label for="logo_url"><?php _e('Custom logo URL:'); ?></label></th>
+					<th scope="row"><label for="logo_url"><?php _e('Custom logo URL:', 'sight'); ?></label></th>
 					<td><input type="text" name="logo_url" id="logo_url" size="50" value="<?php echo get_option('logo_url'); ?>"/><br/><span
-							class="description"> <a href="<?php bloginfo("url"); ?>/wp-admin/media-new.php" target="_blank">Upload your logo</a> (max 290px x 128px) using WordPress Media Library and insert its URL here </span><br/><br/><img src="<?php echo (get_option('logo_url')) ? get_option('logo_url') : get_bloginfo('template_url') . '/images/logo.png' ?>"
+							class="description"> <a href="<?php echo home_url(); ?>/wp-admin/media-new.php" target="_blank">Upload your logo</a> (max 290px x 128px) using WordPress Media Library and insert its URL here </span><br/><br/><img src="<?php echo (get_option('logo_url')) ? get_option('logo_url') : get_template_directory_uri() . '/images/logo.png' ?>"
 					 alt=""/></td>
 				</tr>
 				<tr valign="top">
-					<th scope="row"><label for="bg_color"><?php _e('Custom background color:'); ?></label></th>
+					<th scope="row"><label for="bg_color"><?php _e('Custom background color:', 'sight'); ?></label></th>
 					<td><input type="text" name="bg_color" id="bg_color" size="20" value="<?php echo get_option('bg_color'); ?>"/><span
 							class="description"> e.g., <strong>#27292a</strong> or <strong>black</strong></span></td>
 				</tr>
 				<tr valign="top">
-					<th scope="row"><label for="ss_disable"><?php _e('Disable slideshow:'); ?></label></th>
+					<th scope="row"><label for="ss_disable"><?php _e('Disable slideshow:', 'sight'); ?></label></th>
 					<td><input type="checkbox" name="ss_disable" id="ss_disable" <?php echo (get_option('ss_disable'))? 'checked="checked"' : ''; ?>/></td>
 				</tr>
 				<tr valign="top">
-					<th scope="row"><label for="ss_timeout"><?php _e('Timeout for slideshow (ms):'); ?></label></th>
+					<th scope="row"><label for="ss_timeout"><?php _e('Timeout for slideshow (ms):', 'sight'); ?></label></th>
 					<td><input type="text" name="ss_timeout" id="ss_timeout" size="20" value="<?php echo get_option('ss_timeout'); ?>"/><span
 							class="description"> e.g., <strong>7000</strong></span></td>
 				</tr>
 				<tr valign="top">
-					<th scope="row"><label><?php _e('Pagination:'); ?></label></th>
+					<th scope="row"><label><?php _e('Pagination:', 'sight'); ?></label></th>
 					<td>
 						<input type="radio" name="paging_mode" value="default" <?php echo (get_option('paging_mode') == 'default')? 'checked="checked"' : ''; ?>/><span class="description">Default + WP Page-Navi support</span><br/>
 						<input type="radio" name="paging_mode" value="ajax" <?php echo (get_option('paging_mode') == 'ajax')? 'checked="checked"' : ''; ?>/><span class="description">AJAX-fetching posts</span><br/>
 					</td>
 				</tr>
 				<tr valign="top">
-					<th scope="row"><label for="ga"><?php _e('Google Analytics code:'); ?></label></th>
+					<th scope="row"><label for="ga"><?php _e('Google Analytics code:', 'sight'); ?></label></th>
 					<td><textarea name="ga" id="ga" cols="48" rows="18"><?php echo get_option('ga'); ?></textarea></td>
 				</tr>
 			</table>
@@ -390,7 +390,7 @@ class GetConnected extends WP_Widget {
 
 		$title = esc_attr($instance['title']);
 		?>
-			<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></label></p>
+			<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'sight'); ?> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></label></p>
 
 			<script type="text/javascript">
 				(function($) {
@@ -407,7 +407,7 @@ class GetConnected extends WP_Widget {
 			<div style="margin-bottom: 5px;">
 				<a href="javascript: void(0);" class="social_title" style="font-size: 13px; display: block; margin-bottom: 5px;">FeedBurner</a>
 				<p class="social_options">
-					<label for="feedburner_url"><?php _e('FeedBurner feed url:'); ?></label>
+					<label for="feedburner_url"><?php _e('FeedBurner feed url:', 'sight'); ?></label>
 					<input type="text" name="feedburner_url" id="feedburner_url" class="widefat"
 						value="<?php echo get_option('feedburner_url'); ?>"/>
 				</p>
@@ -537,7 +537,7 @@ class Recentposts_thumbnail extends WP_Widget {
 					}
 					?>
 					<span class="rpthumb-title" <?php echo $offset; ?>><?php the_title(); ?></span>
-					<span class="rpthumb-date" <?php echo $offset; unset($offset); ?>><?php the_time(__('M j, Y')) ?></span>
+					<span class="rpthumb-date" <?php echo $offset; unset($offset); ?>><?php the_time('M j, Y'); ?></span>
 				</a>
 
 			<?php endforeach; ?>
@@ -557,7 +557,7 @@ class Recentposts_thumbnail extends WP_Widget {
 	function form($instance) {
 		$title = esc_attr($instance['title']);
 		?>
-			<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></label></p>
+			<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'sight'); ?> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></label></p>
 			<p><label for="rpthumb_qty">Number of posts: </label><input type="text" name="rpthumb_qty" id="rpthumb_qty" size="2" value="<?php echo get_option('rpthumb_qty'); ?>"/></p>
 			<p><label for="rpthumb_thumb">Hide thumbnails: </label><input type="checkbox" name="rpthumb_thumb" id="rpthumb_thumb" <?php echo (get_option('rpthumb_thumb'))? 'checked="checked"' : ''; ?>/></p>
 		<?php
@@ -575,7 +575,7 @@ function commentslist($comment, $args, $depth) {
 			<table>
 				<tr>
 					<td>
-						<?php echo get_avatar($comment, 70, get_bloginfo('template_url').'/images/no-avatar.png'); ?>
+						<?php echo get_avatar($comment, 70, get_template_directory_uri().'/images/no-avatar.png'); ?>
 					</td>
 					<td>
 						<div class="comment-meta">
@@ -587,7 +587,7 @@ function commentslist($comment, $args, $depth) {
 					<td>
 						<div class="comment-text">
 							<?php if ($comment->comment_approved == '0') : ?>
-								<p><?php _e('Your comment is awaiting moderation.') ?></p>
+								<p><?php _e('Your comment is awaiting moderation.', 'sight') ?></p>
 								<br/>
 							<?php endif; ?>
 							<?php comment_text() ?>

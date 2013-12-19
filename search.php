@@ -19,7 +19,7 @@
 		<div class="single clear">
 			<div class="post-content">
 				<div class="search">
-					<form method="get" id="searchform" action="<?php bloginfo('url'); ?>">
+					<form method="get" id="searchform" action="<?php echo home_url(); ?>">
 						<fieldset>
 							<input name="s" type="text" onfocus="if(this.value=='Search with some different keywords') this.value='';" onblur="if(this.value=='') this.value='Search with some different keywords';" value="Search with some different keywords" />
 							<button type="submit"></button>

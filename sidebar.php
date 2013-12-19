@@ -14,9 +14,9 @@
 	<div class="widget sponsors">
 		<h3>Our sponsors</h3>
 		<div class="widget-body">
-			<a href="#"><img src="<?php bloginfo('template_url'); ?>/example/sponsor01.jpg" width="200" height="125" alt=""/></a>
-			<a href="#"><img src="<?php bloginfo('template_url'); ?>/example/sponsor02.jpg" width="200" height="125" alt=""/></a>
-			<a href="#"><img src="<?php bloginfo('template_url'); ?>/example/sponsor03.jpg" width="200" height="125" alt=""/></a>
+			<a href="#"><img src="<?php echo get_template_directory_uri(); ?>/example/sponsor01.jpg" width="200" height="125" alt=""/></a>
+			<a href="#"><img src="<?php echo get_template_directory_uri(); ?>/example/sponsor02.jpg" width="200" height="125" alt=""/></a>
+			<a href="#"><img src="<?php echo get_template_directory_uri(); ?>/example/sponsor03.jpg" width="200" height="125" alt=""/></a>
 		</div>
 	</div>
 			

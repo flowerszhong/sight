@@ -1,7 +1,7 @@
 <?php if ( comments_open() ) : ?>
 <div class="comments">
 	<?php if ( post_password_required() ) : ?>
-					<p class="nopassword"><?php _e('This post is password protected. Enter the password to view any comments.'); ?></p>
+					<p class="nopassword"><?php _e('This post is password protected. Enter the password to view any comments.', 'sight'); ?></p>
 				</div><!-- #comments -->
 	<?php
 			/* Stop the rest of comments.php from being processed,
