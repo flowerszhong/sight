@@ -1,6 +1,6 @@
 <?php if ( have_posts() ) : ?>
 
-    <div id="loop" class="<?php if ($_COOKIE['mode'] == 'grid') echo 'grid'; else echo 'list'; ?> clear">
+    <div id="loop" class="<?php echo isset($_COOKIE['mode']) && $_COOKIE['mode'] == 'grid' ? 'grid' : 'list'; ?> clear">
 
     <?php while ( have_posts() ) : the_post(); ?>
 
