@@ -277,7 +277,7 @@ msgstr ""
 msgid "Flickr group"
 msgstr ""
 
-#: sight/widgets/get-connected.php:125 sight/widgets/recent-posts.php:68
+#: sight/widgets/get-connected.php:125 sight/widgets/recent-posts.php:69
 msgid "Title:"
 msgstr ""
 
@@ -300,14 +300,14 @@ msgstr ""
 msgid "Sight Recent Posts"
 msgstr ""
 
-#: sight/widgets/recent-posts.php:65
+#: sight/widgets/recent-posts.php:66
 msgid "Recent Posts"
 msgstr ""
 
-#: sight/widgets/recent-posts.php:69
+#: sight/widgets/recent-posts.php:70
 msgid "Number of posts:"
 msgstr ""
 
-#: sight/widgets/recent-posts.php:70
+#: sight/widgets/recent-posts.php:71
 msgid "Hide thumbnails:"
 msgstr ""

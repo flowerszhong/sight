@@ -54,8 +54,8 @@
 				.'</p>',
 			'comment_notes_before' => '',
 			'comment_notes_after' => '',
-			'title_reply' => __('What do you think?', 'portfolium'),
-			'label_submit' => __('Submit', 'portfolium'),
+			'title_reply' => __('What do you think?', 'sight'),
+			'label_submit' => __('Submit', 'sight'),
 			'comment_field' => '<div class="commform-textarea"><div><textarea name="comment" id="comment" cols="50" rows="7" tabindex="1"></textarea></div></div>',
 			'fields' => apply_filters('comment_form_default_fields', array(
 				'author' => '<div class="commform-author"><p>'.__('Name', 'sight').' <span>'.__('required', 'sight').'</span></p><div><input type="text" name="author" id="author" tabindex="2" /></div></div>',
