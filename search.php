@@ -18,7 +18,7 @@
 	<div class="entry">
 		<div class="single clear">
 			<div class="post-content">
-				<div class="search">
+				<div class="search_form">
 					<form method="get" id="searchform" action="<?php echo home_url(); ?>">
 						<fieldset>
 	<?php $button = __('Search with some different keywords', 'sight'); ?>

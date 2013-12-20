@@ -49,10 +49,10 @@ body {font: 62.5% Georgia, Geneva, "Times New Roman", times; background: #27292a
 .menu a {color: #000; text-decoration: none;}
 .menu a:hover {text-decoration: underline;}
 
-.search {width: 145px; margin-top: 28px; float: right;}
-.search fieldset {width: 145px; height: 31px; background: #dadada;}
-.search input {width: 105px; border: none; background: none; padding: 8px; color: #fff; font: 11px Georgia, Geneva, "Times New Roman", times; text-transform: uppercase; vertical-align: middle;}
-.search button {width: 16px; height: 16px; background: url("images/search.png") 50% 50% no-repeat; cursor: pointer; border: none; vertical-align: middle;}
+.search_form {width: 145px; margin-top: 28px; float: right;}
+.search_form fieldset {width: 145px; height: 31px; background: #dadada;}
+.search_form input {width: 105px; border: none; background: none; padding: 8px; color: #fff; font: 11px Georgia, Geneva, "Times New Roman", times; text-transform: uppercase; vertical-align: middle;}
+.search_form button {width: 16px; height: 16px; background: url("images/search.png") 50% 50% no-repeat; cursor: pointer; border: none; vertical-align: middle;}
 
 /*** Navigation ***/
 
@@ -199,9 +199,9 @@ a.dd_hover:hover {text-decoration: none !important;}
 .post-content blockquote {padding: 15px 0 10px 65px; background: url("images/bq.png") 20px 0 no-repeat;}
 .post-content blockquote p {color: #8c8888; font: italic 16px Georgia, Geneva, "Times New Roman", times;}
 
-.post-content .search {float: none; margin-top: 15px; width: auto;}
-.post-content .search fieldset {width: 610px; height: 35px;}
-.post-content .search input {width: 570px; font-size: 16px;}
+.post-content .search_form {float: none; margin-top: 15px; width: auto;}
+.post-content .search_form fieldset {width: 610px; height: 35px;}
+.post-content .search_form input {width: 570px; font-size: 16px;}
 
 .post-navigation {width: 610px; padding: 15px 0 0 30px; position: relative;}
 .post-navigation a {display: block; color: #000; font: 11px Helvetica, Arial, sans-serif; text-decoration: none; line-height: 1.5;}

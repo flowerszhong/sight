@@ -112,75 +112,75 @@ msgstr ""
 msgid "Top menu"
 msgstr ""
 
-#: sight/functions.php:99
+#: sight/functions.php:96
 msgid "Site description"
 msgstr ""
 
-#: sight/functions.php:104
+#: sight/functions.php:101
 msgid "Sidebar"
 msgstr ""
 
-#: sight/functions.php:280
+#: sight/functions.php:277
 msgid "Sight Theme Options"
 msgstr ""
 
-#: sight/functions.php:287
+#: sight/functions.php:284
 msgid "Custom logo URL:"
 msgstr ""
 
-#: sight/functions.php:290
+#: sight/functions.php:287
 msgid ""
 "Upload your logo</a> (max 290px x 128px) using WordPress Media Library and "
 "insert its URL here"
 msgstr ""
 
-#: sight/functions.php:296
+#: sight/functions.php:293
 msgid "Custom background color:"
 msgstr ""
 
-#: sight/functions.php:298
+#: sight/functions.php:295
 msgid "e.g., <strong>#27292a</strong> or <strong>black</strong>"
 msgstr ""
 
-#: sight/functions.php:302
+#: sight/functions.php:299
 msgid "Disable slideshow:"
 msgstr ""
 
-#: sight/functions.php:306
+#: sight/functions.php:303
 msgid "Timeout for slideshow (ms):"
 msgstr ""
 
-#: sight/functions.php:308
+#: sight/functions.php:305
 msgid "e.g., <strong>7000</strong>"
 msgstr ""
 
-#: sight/functions.php:311
+#: sight/functions.php:308
 msgid "Pagination:"
 msgstr ""
 
-#: sight/functions.php:313
+#: sight/functions.php:310
 msgid "Default + WP Page-Navi support"
 msgstr ""
 
-#: sight/functions.php:314
+#: sight/functions.php:311
 msgid "AJAX-fetching posts"
 msgstr ""
 
-#: sight/functions.php:318
+#: sight/functions.php:315
 msgid "Google Analytics code:"
 msgstr ""
 
-#: sight/functions.php:343
+#: sight/functions.php:340
 #, php-format
 msgid "<p class=\"comment-author\"><span>%s</span> says:</p>"
 msgstr ""
 
-#: sight/functions.php:344
+#: sight/functions.php:341
 #, php-format
 msgid "<p class=\"comment-date\">%s</p>"
 msgstr ""
 
-#: sight/functions.php:351
+#: sight/functions.php:348
 msgid "Your comment is awaiting moderation."
 msgstr ""
 
@@ -296,8 +296,12 @@ msgstr ""
 msgid "Description:"
 msgstr ""
 
-#: sight/widgets/recent-posts.php:6 sight/widgets/recent-posts.php:65
+#: sight/widgets/recent-posts.php:6
 msgid "Sight Recent Posts"
+msgstr ""
+
+#: sight/widgets/recent-posts.php:65
+msgid "Recent Posts"
 msgstr ""
 
 #: sight/widgets/recent-posts.php:69
