@@ -85,6 +85,32 @@ function sight_thumbnail_size() {
 add_action('after_switch_theme', 'sight_thumbnail_size');
 
 /**
+ * Register three Twenty Fourteen widget areas.
+ *
+ * @return void
+ */
+function twentyfourteen_widgets_init() {
+	require get_template_directory().'/widgets/get-connected.php';
+	require get_template_directory().'/widgets/recent-posts.php';
+	register_widget('GetConnected');
+	register_widget('Recentposts_thumbnail');
+
+	register_sidebar(array(
+		'name' => __('Site description', 'sight'),
+		'before_widget' => '<div class="site-description">',
+		'after_widget' => '</div>'
+	));
+	register_sidebar(array(
+		'name' => __('Sidebar', 'sight'),
+		'before_widget' => '<div id="%1$s" class="%2$s widget">',
+		'after_widget' => '</div></div>',
+		'before_title' => '<h3>',
+		'after_title' => '</h3><div class="widget-body clear">'
+	));
+}
+add_action('widgets_init', 'twentyfourteen_widgets_init');
+
+/**
  * Enqueue scripts and styles for the front end.
  *
  * @return void
@@ -114,17 +140,16 @@ if (is_admin() && isset($_GET['activated']) && $pagenow == 'themes.php') {
 
 class extended_walker extends Walker_Nav_Menu {
 	function display_element($element, &$children_elements, $max_depth, $depth = 0, $args, &$output) {
-
 		if (!$element)
 			return;
 
 		$id_field = $this->db_fields['id'];
 
-		//display this element
+		// display this element
 		if (is_array($args[0]))
 			$args[0]['has_children'] = !empty($children_elements[$element->$id_field]);
 
-		//Adds the 'parent' class to the current item if it has children
+		// Adds the 'parent' class to the current item if it has children
 		if (!empty($children_elements[$element->$id_field]))
 			array_push($element->classes, 'parent');
 
@@ -136,9 +161,7 @@ class extended_walker extends Walker_Nav_Menu {
 
 		// descend only when the depth is right and there are childrens for this element
 		if (($max_depth == 0 || $max_depth > $depth + 1) && isset($children_elements[$id])) {
-
 			foreach ($children_elements[$id] as $child) {
-
 				if (!isset($newlevel)) {
 					$newlevel = true;
 					//start the child delimiter
@@ -151,69 +174,48 @@ class extended_walker extends Walker_Nav_Menu {
 		}
 
 		if (isset($newlevel) && $newlevel) {
-			//end the child delimiter
+			// end the child delimiter
 			$cb_args = array_merge(array(&$output, $depth), $args);
 			call_user_func_array(array(&$this, 'end_lvl'), $cb_args);
 		}
 
-		//end this element
+		// end this element
 		$cb_args = array_merge(array(&$output, $element, $depth), $args);
 		call_user_func_array(array(&$this, 'end_el'), $cb_args);
 	}
 }
 
-/*** Slideshow ***/
+/**
+ * Slideshow
+ */
+// Callback function to show fields in meta box
+function sight_show_box() {
+	global $post;
+	$field = array('name' => 'Show in slideshow', 'id' => 'sgt_slide', 'type' => 'checkbox');
+	// get current post meta data
+	$meta = get_post_meta($post->ID, $field['id'], true);
 
-$prefix = 'sgt_';
+	// Use nonce for verification
+	?>
+	<input type="hidden" name="sight_meta_box_nonce" value="<?php echo wp_create_nonce(basename(__FILE__)); ?>" />
 
-$meta_box = array(
-	'id' => 'slide',
-	'title' => 'Slideshow Options',
-	'page' => 'post',
-	'context' => 'side',
-	'priority' => 'low',
-	'fields' => array(
-		array(
-			'name' => 'Show in slideshow',
-			'id' => $prefix . 'slide',
-			'type' => 'checkbox'
-		)
-	)
-);
-add_action('admin_menu', 'sight_add_box');
+	<table class="form-table">
+		<tr>
+			<th style="width:50%"><label for="<?php echo $field['id']; ?>"><?php echo $field['name']; ?></label></th>
+			<td>
+				<input type="checkbox" name="<?php echo $field['id']; ?>" id="<?php echo $field['id']; ?>"<?php echo $meta ? ' checked="checked"' : ''; ?> />
+			<td>
+		</tr>
+	</table>
+
+	<?php
+}
 
 // Add meta box
 function sight_add_box() {
-	global $meta_box;
-
-	add_meta_box($meta_box['id'], $meta_box['title'], 'sight_show_box', $meta_box['page'], $meta_box['context'], $meta_box['priority']);
+	add_meta_box('slide', 'Slideshow Options', 'sight_show_box', 'post', 'side', 'low');
 }
-
-// Callback function to show fields in meta box
-function sight_show_box() {
-	global $meta_box, $post;
-
-	// Use nonce for verification
-	echo '<input type="hidden" name="sight_meta_box_nonce" value="', wp_create_nonce(basename(__FILE__)), '" />';
-
-	echo '<table class="form-table">';
-
-	foreach ($meta_box['fields'] as $field) {
-		// get current post meta data
-		$meta = get_post_meta($post->ID, $field['id'], true);
-
-		echo '<tr>',
-				'<th style="width:50%"><label for="', $field['id'], '">', $field['name'], '</label></th>',
-				'<td>';
-				echo '<input type="checkbox" name="', $field['id'], '" id="', $field['id'], '"', $meta ? ' checked="checked"' : '', ' />';
-		echo '<td>',
-			'</tr>';
-	}
-
-	echo '</table>';
-}
-
-add_action('save_post', 'sight_save_data');
+add_action('add_meta_boxes', 'sight_add_box');
 
 // Save data from meta box
 function sight_save_data($post_id) {
@@ -234,7 +236,8 @@ function sight_save_data($post_id) {
 		if (!current_user_can('edit_page', $post_id)) {
 			return $post_id;
 		}
-	} elseif (!current_user_can('edit_post', $post_id)) {
+	}
+	elseif (!current_user_can('edit_post', $post_id)) {
 		return $post_id;
 	}
 
@@ -244,14 +247,17 @@ function sight_save_data($post_id) {
 
 		if ($new && $new != $old) {
 			update_post_meta($post_id, $field['id'], $new);
-		} elseif ('' == $new && $old) {
+		}
+		elseif ('' == $new && $old) {
 			delete_post_meta($post_id, $field['id'], $old);
 		}
 	}
 }
+add_action('save_post', 'sight_save_data');
 
-/*** Options ***/
-
+/**
+ * Options
+ */
 function options_admin_menu() {
 	// here's where we add our theme options page link to the dashboard sidebar
 	add_theme_page("Sight Theme Options", "Theme Options", 'edit_themes', basename(__FILE__), 'options_page');
@@ -259,7 +265,15 @@ function options_admin_menu() {
 add_action('admin_menu', 'options_admin_menu');
 
 function options_page() {
-	if ( $_POST['update_options'] == 'true' ) { options_update(); } //check options update
+	// check options update
+	if ($_POST['update_options'] == 'true') {
+		update_option('logo_url', $_POST['logo_url']);
+		update_option('bg_color', $_POST['bg_color']);
+		update_option('ss_disable', $_POST['ss_disable']);
+		update_option('ss_timeout', $_POST['ss_timeout']);
+		update_option('paging_mode', $_POST['paging_mode']);
+		update_option('ga', stripslashes_deep($_POST['ga']));
+	}
 	?>
 	<div class="wrap">
 		<div id="icon-options-general" class="icon32"><br /></div>
@@ -309,352 +323,12 @@ function options_page() {
 			<p><input type="submit" value="Save Changes" class="button button-primary" /></p>
 		</form>
 	</div>
-<?php
+	<?php
 }
 
-// Update options
-
-function options_update() {
-	update_option('logo_url', $_POST['logo_url']);
-	update_option('bg_color', $_POST['bg_color']);
-	update_option('ss_disable', $_POST['ss_disable']);
-	update_option('ss_timeout', $_POST['ss_timeout']);
-	update_option('paging_mode', $_POST['paging_mode']);
-	update_option('ga', stripslashes_deep($_POST['ga']));
-}
-
-/*** Widgets ***/
-
-if (function_exists('register_sidebar')) {
-	register_sidebar(array(
-		'name'=>'Site description',
-		'before_widget' => '<div class="site-description">',
-		'after_widget' => '</div>'
-	));
-	register_sidebar(array(
-		'name'=>'Sidebar',
-		'before_widget' => '<div id="%1$s" class="%2$s widget">',
-		'after_widget' => '</div></div>',
-		'before_title' => '<h3>',
-		'after_title' => '</h3><div class="widget-body clear">'
-	));
-}
-
-class GetConnected extends WP_Widget {
-
-	function GetConnected() {
-		parent::WP_Widget(false, $name = 'Sight Social Links');
-	}
-
-	function widget($args, $instance) {
-		extract( $args );
-		$title = apply_filters('widget_title', $instance['title']);
-		?>
-			<?php echo $before_widget; ?>
-				<?php if ( $title )
-					echo $before_title . $title . $after_title; else echo '<div class="widget-body clear">'; ?>
-
-					<!-- RSS -->
-					<div class="getconnected_rss">
-					<a href="<?php echo ( get_option('feedburner_url') )? get_option('feedburner_url') : get_bloginfo('rss2_url'); ?>"><?php _e('RSS Feed', 'sight'); ?></a>
-					<?php echo (get_option('feedburner_url') && function_exists('feedcount'))? feedcount( get_option('feedburner_url') ) : ''; ?>
-					</div>
-					<!-- /RSS -->
-
-					<!-- Twitter -->
-					<?php if ( get_option('twitter_url') ) : ?>
-					<div class="getconnected_twitter">
-					<a href="<?php echo get_option('twitter_url'); ?>">Twitter</a>
-					<span><?php if ( function_exists('twittercount') ) twittercount( get_option('twitter_url') ); ?> <?php _e('followers', 'sight'); ?></span>
-					</div>
-					<?php endif; ?>
-					<!-- /Twitter -->
-
-					<!-- Facebook -->
-					<?php if ( get_option('fb_url') ) : ?>
-					<div class="getconnected_fb">
-					<a href="<?php echo get_option('fb_url'); ?>">Facebook</a>
-					<span><?php echo get_option('fb_text'); ?></span>
-					</div>
-					<?php endif; ?>
-					<!-- /Facebook -->
-
-					<!-- Flickr -->
-					<?php if ( get_option('flickr_url') ) : ?>
-					<div class="getconnected_flickr">
-					<a href="<?php echo get_option('flickr_url'); ?>"><?php _e('Flickr group', 'sight'); ?></a>
-					<span><?php echo get_option('flickr_text'); ?></span>
-					</div>
-					<?php endif; ?>
-					<!-- /Flickr -->
-
-					<!-- Behance -->
-					<?php if ( get_option('behance_url') ) : ?>
-					<div class="getconnected_behance">
-					<a href="<?php echo get_option('behance_url'); ?>">Behance</a>
-					<span><?php echo get_option('behance_text'); ?></span>
-					</div>
-					<?php endif; ?>
-					<!-- /Behance -->
-
-					<!-- Delicious -->
-					<?php if ( get_option('delicious_url') ) : ?>
-					<div class="getconnected_delicious">
-					<a href="<?php echo get_option('delicious_url'); ?>">Delicious</a>
-					<span><?php echo get_option('delicious_text'); ?></span>
-					</div>
-					<?php endif; ?>
-					<!-- /Delicious -->
-
-					<!-- Stumbleupon -->
-					<?php if ( get_option('stumbleupon_url') ) : ?>
-					<div class="getconnected_stumbleupon">
-					<a href="<?php echo get_option('stumbleupon_url'); ?>">Stumbleupon</a>
-					<span><?php echo get_option('stumbleupon_text'); ?></span>
-					</div>
-					<?php endif; ?>
-					<!-- /Stumbleupon -->
-
-					<!-- Tumblr -->
-					<?php if ( get_option('tumblr_url') ) : ?>
-					<div class="getconnected_tumblr">
-					<a href="<?php echo get_option('tumblr_url'); ?>">Tumblr</a>
-					<span><?php echo get_option('tumblr_text'); ?></span>
-					</div>
-					<?php endif; ?>
-					<!-- /Tumblr -->
-
-					<!-- Vimeo -->
-					<?php if ( get_option('vimeo_url') ) : ?>
-					<div class="getconnected_vimeo">
-					<a href="<?php echo get_option('vimeo_url'); ?>">Vimeo</a>
-					<span><?php echo get_option('vimeo_text'); ?></span>
-					</div>
-					<?php endif; ?>
-					<!-- /Vimeo -->
-
-					<!-- Youtube -->
-					<?php if ( get_option('youtube_url') ) : ?>
-					<div class="getconnected_youtube">
-					<a href="<?php echo get_option('youtube_url'); ?>">Youtube</a>
-					<span><?php echo get_option('youtube_text'); ?></span>
-					</div>
-					<?php endif; ?>
-					<!-- /Youtube -->
-
-			<?php echo $after_widget; ?>
-		<?php
-	}
-
-	function update($new_instance, $old_instance) {
-		$instance = $old_instance;
-		$instance['title'] = strip_tags($new_instance['title']);
-		
-		update_option('feedburner_url', $_POST['feedburner_url']);
-		update_option('twitter_url', $_POST['twitter_url']);
-		update_option('fb_url', $_POST['fb_url']);
-		update_option('flickr_url', $_POST['flickr_url']);
-		update_option('behance_url', $_POST['behance_url']);
-		update_option('delicious_url', $_POST['delicious_url']);
-		update_option('stumbleupon_url', $_POST['stumbleupon_url']);
-		update_option('tumblr_url', $_POST['tumblr_url']);
-		update_option('vimeo_url', $_POST['vimeo_url']);
-		update_option('youtube_url', $_POST['youtube_url']);
-		
-		update_option('fb_text', $_POST['fb_text']);
-		update_option('flickr_text', $_POST['flickr_text']);
-		update_option('behance_text', $_POST['behance_text']);
-		update_option('delicious_text', $_POST['delicious_text']);
-		update_option('stumbleupon_text', $_POST['stumbleupon_text']);
-		update_option('tumblr_text', $_POST['tumblr_text']);
-		update_option('vimeo_text', $_POST['vimeo_text']);
-		update_option('youtube_text', $_POST['youtube_text']);
-		
-		return $instance;
-	}
-
-	function form($instance) {
-
-		$title = esc_attr($instance['title']);
-		?>
-			<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'sight'); ?> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></label></p>
-
-			<script type="text/javascript">
-				(function($) {
-					$(function() {
-						$('.social_options').hide();
-						$('.social_title').toggle(
-							function(){ $(this).next().slideDown(100) },
-							function(){ $(this).next().slideUp(100) }
-						);
-					})
-				})(jQuery)
-			</script>
-
-			<div style="margin-bottom: 5px;">
-				<a href="javascript: void(0);" class="social_title" style="font-size: 13px; display: block; margin-bottom: 5px;">FeedBurner</a>
-				<p class="social_options">
-					<label for="feedburner_url"><?php _e('FeedBurner feed url:', 'sight'); ?></label>
-					<input type="text" name="feedburner_url" id="feedburner_url" class="widefat"
-						value="<?php echo get_option('feedburner_url'); ?>"/>
-				</p>
-			</div>
-
-			<div style="margin-bottom: 5px;">
-				<a href="javascript: void(0);" class="social_title" style="font-size: 13px; display: block; margin-bottom: 5px;">Twitter</a>
-				<p class="social_options">
-					<label for="twitter_url"><?php _e('Profile url:', 'sight'); ?></label>
-					<input type="text" name="twitter_url" id="twitter_url" class="widefat" value="<?php echo get_option('twitter_url'); ?>"/>
-				</p>
-			</div>
-
-			<div style="margin-bottom: 5px;">
-				<a href="javascript: void(0);" class="social_title" style="font-size: 13px; display: block; margin-bottom: 5px;">Facebook</a>
-				<p class="social_options">
-					<label for="fb_url"><?php _e('Profile url:', 'sight'); ?></label>
-					<input type="text" name="fb_url" id="fb_url" class="widefat" value="<?php echo get_option('fb_url'); ?>"/>
-					<label for="fb_text"><?php _e('Description:', 'sight'); ?></label>
-					<input type="text" name="fb_text" id="fb_text" class="widefat" value="<?php echo get_option('fb_text'); ?>"/>
-				</p>
-			</div>
-
-			<div style="margin-bottom: 5px;">
-				<a href="javascript: void(0);" class="social_title" style="font-size: 13px; display: block; margin-bottom: 5px;">Flickr</a>
-				<p class="social_options">
-					<label for="flickr_url"><?php _e('Profile url:', 'sight'); ?></label>
-					<input type="text" name="flickr_url" id="flickr_url" class="widefat" value="<?php echo get_option('flickr_url'); ?>"/>
-					<label for="flickr_text"><?php _e('Description:', 'sight'); ?></label>
-					<input type="text" name="flickr_text" id="flickr_text" class="widefat" value="<?php echo get_option('flickr_text'); ?>"/>
-				</p>
-			</div>
-
-			<div style="margin-bottom: 5px;">
-				<a href="javascript: void(0);" class="social_title" style="font-size: 13px; display: block; margin-bottom: 5px;">Behance</a>
-				<p class="social_options">
-					<label for="behance_url"><?php _e('Profile url:', 'sight'); ?></label>
-					<input type="text" name="behance_url" id="behance_url" class="widefat" value="<?php echo get_option('behance_url'); ?>"/>
-					<label for="behance_text"><?php _e('Description:', 'sight'); ?></label>
-					<input type="text" name="behance_text" id="behance_text" class="widefat" value="<?php echo get_option('behance_text'); ?>"/>
-				</p>
-			</div>
-
-			<div style="margin-bottom: 5px;">
-				<a href="javascript: void(0);" class="social_title" style="font-size: 13px; display: block; margin-bottom: 5px;">Delicious</a>
-				<p class="social_options">
-					<label for="delicious_url"><?php _e('Profile url:', 'sight'); ?></label>
-					<input type="text" name="delicious_url" id="delicious_url" class="widefat" value="<?php echo get_option('delicious_url'); ?>"/>
-					<label for="delicious_text"><?php _e('Description:', 'sight'); ?></label>
-					<input type="text" name="delicious_text" id="delicious_text" class="widefat" value="<?php echo get_option('delicious_text'); ?>"/>
-				</p>
-			</div>
-
-			<div style="margin-bottom: 5px;">
-				<a href="javascript: void(0);" class="social_title" style="font-size: 13px; display: block; margin-bottom: 5px;">Stumbleupon</a>
-				<p class="social_options">
-					<label for="stumbleupon_url"><?php _e('Profile url:', 'sight'); ?></label>
-					<input type="text" name="stumbleupon_url" id="stumbleupon_url" class="widefat" value="<?php echo get_option('stumbleupon_url'); ?>"/>
-					<label for="stumbleupon_text"><?php _e('Description:', 'sight'); ?></label>
-					<input type="text" name="stumbleupon_text" id="stumbleupon_text" class="widefat" value="<?php echo get_option('stumbleupon_text'); ?>"/>
-				</p>
-			</div>
-
-			<div style="margin-bottom: 5px;">
-				<a href="javascript: void(0);" class="social_title" style="font-size: 13px; display: block; margin-bottom: 5px;">Tumblr</a>
-				<p class="social_options">
-					<label for="tumblr_url"><?php _e('Profile url:', 'sight'); ?></label>
-					<input type="text" name="tumblr_url" id="tumblr_url" class="widefat" value="<?php echo get_option('tumblr_url'); ?>"/>
-					<label for="tumblr_text"><?php _e('Description:', 'sight'); ?></label>
-					<input type="text" name="tumblr_text" id="tumblr_text" class="widefat" value="<?php echo get_option('tumblr_text'); ?>"/>
-				</p>
-			</div>
-
-			<div style="margin-bottom: 5px;">
-				<a href="javascript: void(0);" class="social_title" style="font-size: 13px; display: block; margin-bottom: 5px;">Vimeo</a>
-				<p class="social_options">
-					<label for="vimeo_url"><?php _e('Profile url:', 'sight'); ?></label>
-					<input type="text" name="vimeo_url" id="vimeo_url" class="widefat" value="<?php echo get_option('vimeo_url'); ?>"/>
-					<label for="vimeo_text"><?php _e('Description:', 'sight'); ?></label>
-					<input type="text" name="vimeo_text" id="vimeo_text" class="widefat" value="<?php echo get_option('vimeo_text'); ?>"/>
-				</p>
-			</div>
-
-			<div style="margin-bottom: 5px;">
-				<a href="javascript: void(0);" class="social_title" style="font-size: 13px; display: block; margin-bottom: 5px;">Youtube</a>
-				<p class="social_options">
-					<label for="youtube_url"><?php _e('Profile url:', 'sight'); ?></label>
-					<input type="text" name="youtube_url" id="youtube_url" class="widefat" value="<?php echo get_option('youtube_url'); ?>"/>
-					<label for="youtube_text"><?php _e('Description:', 'sight'); ?></label>
-					<input type="text" name="youtube_text" id="youtube_text" class="widefat" value="<?php echo get_option('youtube_text'); ?>"/>
-				</p>
-			</div>
-		<?php
-	}
-
-}
-add_action('widgets_init', create_function('', 'return register_widget("GetConnected");'));
-
-class Recentposts_thumbnail extends WP_Widget {
-
-	function Recentposts_thumbnail() {
-		parent::WP_Widget(false, $name = 'Sight Recent Posts');
-	}
-
-	function widget($args, $instance) {
-		extract( $args );
-		$title = apply_filters('widget_title', $instance['title']);
-		?>
-			<?php echo $before_widget; ?>
-			<?php if ( $title ) echo $before_title . $title . $after_title; else echo '<div class="widget-body clear">'; ?>
-
-			<?php
-				global $post;
-				if (get_option('rpthumb_qty')) $rpthumb_qty = get_option('rpthumb_qty'); else $rpthumb_qty = 5;
-				$q_args = array(
-					'numberposts' => $rpthumb_qty,
-				);
-				$rpthumb_posts = get_posts($q_args);
-				foreach ( $rpthumb_posts as $post ) :
-					setup_postdata($post);
-			?>
-
-				<a href="<?php the_permalink(); ?>" class="rpthumb clear">
-					<?php if ( has_post_thumbnail() && !get_option('rpthumb_thumb') ) {
-						the_post_thumbnail('mini-thumbnail');
-						$offset = 'style="padding-left: 65px;"';
-					}
-					?>
-					<span class="rpthumb-title" <?php echo $offset; ?>><?php the_title(); ?></span>
-					<span class="rpthumb-date" <?php echo $offset; unset($offset); ?>><?php the_time('M j, Y'); ?></span>
-				</a>
-
-			<?php endforeach; ?>
-
-			<?php echo $after_widget; ?>
-		<?php
-	}
-
-	function update($new_instance, $old_instance) {
-		$instance = $old_instance;
-		$instance['title'] = strip_tags($new_instance['title']);
-		update_option('rpthumb_qty', $_POST['rpthumb_qty']);
-		update_option('rpthumb_thumb', $_POST['rpthumb_thumb']);
-		return $instance;
-	}
-
-	function form($instance) {
-		$title = esc_attr($instance['title']);
-		?>
-			<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'sight'); ?> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></label></p>
-			<p><label for="rpthumb_qty"><?php _e('Number of posts:', 'sight'); ?> </label><input type="text" name="rpthumb_qty" id="rpthumb_qty" size="2" value="<?php echo get_option('rpthumb_qty'); ?>"/></p>
-			<p><label for="rpthumb_thumb"><?php _e('Hide thumbnails:', 'sight'); ?> </label><input type="checkbox" name="rpthumb_thumb" id="rpthumb_thumb" <?php echo (get_option('rpthumb_thumb'))? 'checked="checked"' : ''; ?>/></p>
-		<?php
-	}
-
-}
-add_action('widgets_init', create_function('', 'return register_widget("Recentposts_thumbnail");'));
-
-/*** Comments ***/
-
+/**
+ * Comments
+ */
 function commentslist($comment, $args, $depth) {
 	$GLOBALS['comment'] = $comment; ?>
 	<li>
@@ -686,73 +360,21 @@ function commentslist($comment, $args, $depth) {
 <?php
 }
 
-/*** Misc ***/
+function twittercount($twitter_url = 'http://twitter.com/wpshower') {
+	$username = explode('/', $twitter_url);
+	$username = end($username);
 
-function feedcount($feedurl='http://feeds.feedburner.com/wpshower') {
-	$feedid = explode('/', $feedurl);
-	$feedid = end($feedid);
-	$twodayago = date('Y-m-d', strtotime('-2 days', time()));
-	$onedayago = date('Y-m-d', strtotime('-1 days', time()));
-	$today = date('Y-m-d');
+	$remote = wp_remote_get('https://twitter.com/'.$username);
+	if ($remote instanceof WP_Error || $remote['response']['code'] != 200) return '0';
 
-	$api = "https://feedburner.google.com/api/awareness/1.0/GetFeedData?uri=$feedid&dates=$twodayago,$onedayago";
+	$preg = preg_match(
+		'/data-element-term="follower_stats" data-nav="followers"(.*?)>(.*?)<strong>(.*?)<\/strong>(.*?)Followers/s',
+		$remote['body'],
+		$matches
+	);
+	if (!$preg) return '0';
 
-	//Initialize a cURL session
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	curl_setopt($ch, CURLOPT_URL, $api);
-	$data = curl_exec($ch);
-	$base_code = curl_getinfo($ch);
-	curl_close($ch);
-
-	if ($base_code['http_code']=='401'){
-		$burner_count_circulation = 'This feed does not permit Awareness API access';
-		$burner_date = $today;
-	} else {
-
-		$xml = new SimpleXMLElement($data); //Parse XML via SimpleXML Class
-		$bis = $xml->attributes(); //Bis Contain first attribute, It usually is ok or fail in FeedBurner
-
-		if ($bis=='ok'){
-			foreach ($xml->feed as $feed) {
-				if ($feed->entry[1]['circulation']=='0'){
-					$burner_count_circulation = $feed->entry[0]['circulation'];
-					$burner_date = $feed->entry[0]['date'];
-				} else {
-					$burner_count_circulation = $feed->entry[1]['circulation'];
-					$burner_date = $feed->entry[1]['date'];
-				}
-			}
-		}
-
-		if ($bis=='fail'){
-			switch ($xml->err['code']) {
-				case 1:
-					$burner_count_circulation = 'Feed Not Found';
-					break;
-				case 5:
-					$burner_count_circulation = 'Missing required parameter (URI)';
-					break;
-				case 6:
-					$burner_count_circulation = 'Malformed parameter (DATES)';
-					break;
-			}
-			$burner_date = $today;
-		}
-
-	}
-	if ( $bis != 'fail' && $burner_count_circulation != '' ) {
-		echo '<span>'.$burner_count_circulation.' readers</span>';
-	} else {
-		echo '<span>'.$burner_count_circulation.'</span>';
-	}
-}
-
-function twittercount($twitter_url='http://twitter.com/wpshower') {
-	$twitterid = explode('/', $twitter_url);
-	$twitterid = end($twitterid);
-	$xml = @simplexml_load_file("http://twitter.com/users/show.xml?screen_name=$twitterid");
-	echo $xml[0]->followers_count;
+	return $matches[3];
 }
 
 function seo_title() {
