@@ -1,7 +1,7 @@
 <?php get_header(); ?>
 
-	<?php if ( have_posts() ) : ?>
-		<?php while ( have_posts() ) : the_post(); ?>
+	<?php if (have_posts()): ?>
+		<?php while (have_posts()): the_post(); ?>
 
 		<div class="content-title">
 			<?php the_category(' <span>/</span> '); ?>
@@ -22,7 +22,7 @@
 						get_the_time('M j, Y'),
 						get_the_time()
 					); ?>
-					<?php edit_post_link( __( 'Edit entry', 'sight'), '&bull; '); ?><a
+					<?php edit_post_link(__('Edit entry', 'sight'), '&bull; '); ?><a
 						href="#comments" class="post-comms"><?php comments_number(__('No Comments', 'sight'), __('1 Comment', 'sight'), __('% Comments', 'sight'), '', __('Comments Closed', 'sight') ); ?></a></div>
 				<div class="post-content"><?php the_content(); ?></div>
 				<div class="post-footer"><?php the_tags('<strong>'.__('Tags:', 'sight').' </strong>', ', '); ?></div>
@@ -37,10 +37,10 @@
 				<?php
 					$prev_post = get_adjacent_post(false, '', true);
 					$next_post = get_adjacent_post(false, '', false); ?>
-					<?php if ($prev_post) : $prev_post_url = get_permalink($prev_post->ID); $prev_post_title = $prev_post->post_title; ?>
+					<?php if ($prev_post): $prev_post_url = get_permalink($prev_post->ID); $prev_post_title = $prev_post->post_title; ?>
 						<a class="post-prev" href="<?php echo $prev_post_url; ?>"><em><?php _e('Previous post', 'sight'); ?></em><span><?php echo $prev_post_title; ?></span></a>
 					<?php endif; ?>
-					<?php if ($next_post) : $next_post_url = get_permalink($next_post->ID); $next_post_title = $next_post->post_title; ?>
+					<?php if ($next_post): $next_post_url = get_permalink($next_post->ID); $next_post_title = $next_post->post_title; ?>
 						<a class="post-next" href="<?php echo $next_post_url; ?>"><em><?php _e('Next post', 'sight'); ?></em><span><?php echo $next_post_title; ?></span></a>
 					<?php endif; ?>
 				<div class="line"></div>

@@ -310,8 +310,8 @@ function options_page() {
 				<tr valign="top">
 					<th scope="row"><label><?php _e('Pagination:', 'sight'); ?></label></th>
 					<td>
-						<input type="radio" name="paging_mode" value="default" <?php echo (get_option('paging_mode') == 'default')? 'checked="checked"' : ''; ?>/><span class="description"><?php _e('Default + WP Page-Navi support', 'sight'); ?></span><br/>
-						<input type="radio" name="paging_mode" value="ajax" <?php echo (get_option('paging_mode') == 'ajax')? 'checked="checked"' : ''; ?>/><span class="description"><?php _e('AJAX-fetching posts', 'sight'); ?></span><br/>
+						<input type="radio" name="paging_mode" value="default" <?php echo (get_option('paging_mode') == 'default') ? 'checked="checked"' : ''; ?>/><span class="description"><?php _e('Default + WP Page-Navi support', 'sight'); ?></span><br/>
+						<input type="radio" name="paging_mode" value="ajax" <?php echo (get_option('paging_mode') == 'ajax') ? 'checked="checked"' : ''; ?>/><span class="description"><?php _e('AJAX-fetching posts', 'sight'); ?></span><br/>
 					</td>
 				</tr>
 				<tr valign="top">
@@ -347,7 +347,7 @@ function commentslist($comment, $args, $depth) {
 					</td>
 					<td>
 						<div class="comment-text">
-							<?php if ($comment->comment_approved == '0') : ?>
+							<?php if ($comment->comment_approved == '0'): ?>
 								<p><?php _e('Your comment is awaiting moderation.', 'sight') ?></p>
 								<br/>
 							<?php endif; ?>

@@ -26,7 +26,7 @@ class GetConnected extends WP_Widget {
 		?>
 
 		<!-- Twitter -->
-		<?php if (get_option('twitter_url')) : ?>
+		<?php if (get_option('twitter_url')): ?>
 		<div class="getconnected_twitter">
 			<a href="<?php echo get_option('twitter_url'); ?>">Twitter</a>
 			<span><?php echo twittercount(get_option('twitter_url')); ?> <?php _e('followers', 'sight'); ?></span>
@@ -35,7 +35,7 @@ class GetConnected extends WP_Widget {
 		<!-- /Twitter -->
 
 		<!-- Facebook -->
-		<?php if (get_option('fb_url')) : ?>
+		<?php if (get_option('fb_url')): ?>
 		<div class="getconnected_fb">
 			<a href="<?php echo get_option('fb_url'); ?>">Facebook</a>
 			<span><?php echo get_option('fb_text'); ?></span>
@@ -53,7 +53,7 @@ class GetConnected extends WP_Widget {
 		<!-- /Flickr -->
 
 		<!-- Behance -->
-		<?php if (get_option('behance_url')) : ?>
+		<?php if (get_option('behance_url')): ?>
 		<div class="getconnected_behance">
 			<a href="<?php echo get_option('behance_url'); ?>">Behance</a>
 			<span><?php echo get_option('behance_text'); ?></span>
@@ -62,7 +62,7 @@ class GetConnected extends WP_Widget {
 		<!-- /Behance -->
 
 		<!-- Delicious -->
-		<?php if (get_option('delicious_url')) : ?>
+		<?php if (get_option('delicious_url')): ?>
 		<div class="getconnected_delicious">
 			<a href="<?php echo get_option('delicious_url'); ?>">Delicious</a>
 			<span><?php echo get_option('delicious_text'); ?></span>
@@ -71,7 +71,7 @@ class GetConnected extends WP_Widget {
 		<!-- /Delicious -->
 
 		<!-- Stumbleupon -->
-		<?php if (get_option('stumbleupon_url')) : ?>
+		<?php if (get_option('stumbleupon_url')): ?>
 		<div class="getconnected_stumbleupon">
 			<a href="<?php echo get_option('stumbleupon_url'); ?>">Stumbleupon</a>
 			<span><?php echo get_option('stumbleupon_text'); ?></span>
@@ -80,7 +80,7 @@ class GetConnected extends WP_Widget {
 		<!-- /Stumbleupon -->
 
 		<!-- Tumblr -->
-		<?php if (get_option('tumblr_url')) : ?>
+		<?php if (get_option('tumblr_url')): ?>
 		<div class="getconnected_tumblr">
 			<a href="<?php echo get_option('tumblr_url'); ?>">Tumblr</a>
 			<span><?php echo get_option('tumblr_text'); ?></span>
@@ -89,7 +89,7 @@ class GetConnected extends WP_Widget {
 		<!-- /Tumblr -->
 
 		<!-- Vimeo -->
-		<?php if (get_option('vimeo_url')) : ?>
+		<?php if (get_option('vimeo_url')): ?>
 		<div class="getconnected_vimeo">
 			<a href="<?php echo get_option('vimeo_url'); ?>">Vimeo</a>
 			<span><?php echo get_option('vimeo_text'); ?></span>
@@ -98,7 +98,7 @@ class GetConnected extends WP_Widget {
 		<!-- /Vimeo -->
 
 		<!-- Youtube -->
-		<?php if (get_option('youtube_url')) : ?>
+		<?php if (get_option('youtube_url')): ?>
 		<div class="getconnected_youtube">
 			<a href="<?php echo get_option('youtube_url'); ?>">Youtube</a>
 			<span><?php echo get_option('youtube_text'); ?></span>

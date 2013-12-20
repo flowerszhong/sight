@@ -1,6 +1,6 @@
 <?php get_header(); ?>
 
-<?php if ( have_posts() ) : ?>
+<?php if (have_posts()): ?>
 
 	<div class="content-title">
 		<?php _e('Search Result', 'sight'); ?> <span>/</span> <?php the_search_query(); ?>

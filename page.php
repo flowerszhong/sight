@@ -1,7 +1,7 @@
 <?php get_header(); ?>
 
-	<?php if ( have_posts() ) : ?>
-		<?php while ( have_posts() ) : the_post(); ?>
+	<?php if (have_posts()): ?>
+		<?php while (have_posts()): the_post(); ?>
 
 		<div class="entry">
 			<div <?php post_class('single clear'); ?> id="post_<?php the_ID(); ?>">
@@ -15,7 +15,7 @@
 						get_the_time()
 					); ?>
 					<?php edit_post_link( __( 'Edit entry', 'sight'), '&bull; '); ?>
-					<?php if ( comments_open() ) : ?>
+					<?php if (comments_open()): ?>
 						<a href="#comments" class="post-comms"><?php comments_number(__('No Comments', 'sight'), __('1 Comment', 'sight'), __('% Comments', 'sight'), '', __('Comments Closed', 'sight') ); ?></a>
 					<?php endif; ?>
 				</div>

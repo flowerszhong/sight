@@ -1,6 +1,6 @@
-<?php if ( comments_open() ) : ?>
+<?php if (comments_open()): ?>
 <div class="comments">
-	<?php if ( post_password_required() ) : ?>
+	<?php if (post_password_required()): ?>
 	<p class="nopassword"><?php _e('This post is password protected. Enter the password to view any comments.', 'sight'); ?></p>
 </div><!-- #comments -->
 	<?php
@@ -17,7 +17,7 @@
 	?>
 
 	<div id="comments">
-	<?php if (have_comments()) : ?>
+	<?php if (have_comments()): ?>
 		<h3><?php printf(_n('1 comment', '%1$s comments', get_comments_number()), number_format_i18n( get_comments_number() ), '' ); ?></h3>
 		<div class="comment_list">
 
@@ -39,7 +39,7 @@
 	<?php endif; // end have_comments() ?>
 	</div>
 
-	<?php if ('open' == $post->comment_status) : ?>
+	<?php if ('open' == $post->comment_status): ?>
 
 		<?php comment_form(array(
 			'must_log_in' => '<p class="comment_message">'
@@ -58,9 +58,9 @@
 			'label_submit' => __('Submit', 'portfolium'),
 			'comment_field' => '<div class="commform-textarea"><div><textarea name="comment" id="comment" cols="50" rows="7" tabindex="1"></textarea></div></div>',
 			'fields' => apply_filters('comment_form_default_fields', array(
-				'author' => '<div class="commform-author"><p>Name <span>required</span></p><div><input type="text" name="author" id="author" tabindex="2" /></div></div>',
-				'email' => '<div class="commform-email"><p>Email <span>required</span></p><div><input type="text" name="email" id="email" tabindex="3" /></div></div>',
-				'url' => '<div class="commform-url"><p>Website</p><div><input type="text" name="url" id="url" tabindex="4" /></div></div>'
+				'author' => '<div class="commform-author"><p>'.__('Name', 'sight').' <span>'.__('required', 'sight').'</span></p><div><input type="text" name="author" id="author" tabindex="2" /></div></div>',
+				'email' => '<div class="commform-email"><p>'.__('Email', 'sight').' <span>'.__('required', 'sight').'</span></p><div><input type="text" name="email" id="email" tabindex="3" /></div></div>',
+				'url' => '<div class="commform-url"><p>'.__('Website', 'sight').'</p><div><input type="text" name="url" id="url" tabindex="4" /></div></div>'
 			))
 		)); ?>
 

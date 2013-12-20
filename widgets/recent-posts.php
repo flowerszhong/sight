@@ -33,7 +33,7 @@ class Recentposts_thumbnail extends WP_Widget {
 		if ($title) echo $before_title.$title.$after_title;
 		else echo '<div class="widget-body clear">';
 
-		foreach ($rpthumb_posts as $post) :
+		foreach ($rpthumb_posts as $post):
 			setup_postdata($post);
 		?>
 
@@ -67,7 +67,7 @@ class Recentposts_thumbnail extends WP_Widget {
 
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'sight'); ?> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></label></p>
 		<p><label for="rpthumb_qty"><?php _e('Number of posts:', 'sight'); ?> </label><input type="text" name="rpthumb_qty" id="rpthumb_qty" size="2" value="<?php echo get_option('rpthumb_qty'); ?>"/></p>
-		<p><label for="rpthumb_thumb"><?php _e('Hide thumbnails:', 'sight'); ?> </label><input type="checkbox" name="rpthumb_thumb" id="rpthumb_thumb" <?php echo (get_option('rpthumb_thumb'))? 'checked="checked"' : ''; ?>/></p>
+		<p><label for="rpthumb_thumb"><?php _e('Hide thumbnails:', 'sight'); ?> </label><input type="checkbox" name="rpthumb_thumb" id="rpthumb_thumb" <?php echo (get_option('rpthumb_thumb')) ? 'checked="checked"' : ''; ?>/></p>
 
 		<?php
 	}

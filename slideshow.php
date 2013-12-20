@@ -1,26 +1,29 @@
 <?php
-	$args = array(
-		'meta_key' => 'sgt_slide',
-		'meta_value' => 'on',
-		'numberposts' => -1,
-		);
-	$slides = get_posts($args);
+$args = array(
+	'meta_key' => 'sgt_slide',
+	'meta_value' => 'on',
+	'numberposts' => -1,
+);
+$slides = get_posts($args);
 
-	if ( !empty($slides) ) : $exl_posts = Array(); ?>
+if (!empty($slides)): $exl_posts = Array();
+?>
 
-		<div class="slideshow"><div id="slideshow">
+<div class="slideshow">
+	<div id="slideshow">
 
-		<?php foreach( $slides as $post ) :
-			setup_postdata($post);
-			global $exl_posts;
-			$exl_posts[] = $post->ID;
-		?>
+	<?php foreach( $slides as $post ):
+		setup_postdata($post);
+		global $exl_posts;
+		$exl_posts[] = $post->ID;
+	?>
+
 		<div class="slide clear">
 			<div class="post">
-				<?php if ( has_post_thumbnail() ) echo '<a href="'.get_permalink().'">'.get_the_post_thumbnail($post->ID, 'slide',
+				<?php if (has_post_thumbnail()) echo '<a href="'.get_permalink().'">'.get_the_post_thumbnail($post->ID, 'slide',
 					array(
-						'alt' => trim(strip_tags( $post->post_title )),
-						'title' => trim(strip_tags( $post->post_title )),
+						'alt' => trim(strip_tags($post->post_title)),
+						'title' => trim(strip_tags($post->post_title)),
 					)).'</a>'; ?>
 				<div class="post-category"><?php the_category(' / '); ?></div>
 				<h2><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
@@ -35,14 +38,16 @@
 					<?php comments_popup_link(__('No Comments', 'sight'), __('1 Comment', 'sight'), __('% Comments', 'sight'), '', __('Comments Closed', 'sight') ); ?>
 					<?php edit_post_link(__('Edit entry', 'sight'), '&bull; '); ?>
 				</div>
-				<div class="post-content"><?php if ( has_post_thumbnail() && function_exists('smart_excerpt') ) smart_excerpt(get_the_excerpt(), 50); else smart_excerpt(get_the_excerpt(), 150); ?></div>
+				<div class="post-content"><?php if (has_post_thumbnail() && function_exists('smart_excerpt')) smart_excerpt(get_the_excerpt(), 50);
+					else smart_excerpt(get_the_excerpt(), 150); ?></div>
 			</div>
 		</div>
-		<?php endforeach; ?>
 
-		</div>
+	<?php endforeach; ?>
 
-			<a href="javascript: void(0);" id="larr"></a>
-			<a href="javascript: void(0);" id="rarr"></a>
-		</div>
-	<?php endif; ?>
+	</div>
+
+	<a href="javascript: void(0);" id="larr"></a>
+	<a href="javascript: void(0);" id="rarr"></a>
+</div>
+<?php endif; ?>

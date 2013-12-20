@@ -1,15 +1,15 @@
-<?php if ( have_posts() ) : ?>
+<?php if (have_posts()): ?>
 
 	<div id="loop" class="<?php echo isset($_COOKIE['mode']) && $_COOKIE['mode'] == 'grid' ? 'grid' : 'list'; ?> clear">
 
-	<?php while ( have_posts() ) : the_post(); ?>
+	<?php while (have_posts()): the_post(); ?>
 
 		<div <?php post_class('post clear'); ?> id="post_<?php the_ID(); ?>">
-			<?php if ( has_post_thumbnail() ) :?>
+			<?php if (has_post_thumbnail()): ?>
 			<a href="<?php the_permalink() ?>" class="thumb"><?php the_post_thumbnail('thumbnail', array(
-						'alt' => trim(strip_tags( $post->post_title )),
-						'title' => trim(strip_tags( $post->post_title )),
-					)); ?></a>
+					'alt' => trim(strip_tags($post->post_title)),
+					'title' => trim(strip_tags($post->post_title)),
+				)); ?></a>
 			<?php endif; ?>
 
 			<div class="post-category"><?php the_category(' / '); ?></div>
