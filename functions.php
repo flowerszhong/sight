@@ -1,80 +1,163 @@
 <?php
+/**
+ * Sight functions and definitions
+ *
+ * Set up the theme and provides some helper functions, which are used in the
+ * theme as custom template tags. Others are attached to action and filter
+ * hooks in WordPress to change core functionality.
+ *
+ * When using a child theme you can override certain functions (those wrapped
+ * in a function_exists() call) by defining them first in your child theme's
+ * functions.php file. The child theme's functions.php file is included before
+ * the parent theme's file, so the child theme functions would be used.
+ *
+ * @link http://codex.wordpress.org/Theme_Development
+ * @link http://codex.wordpress.org/Child_Themes
+ *
+ * Functions that are not pluggable (not wrapped in function_exists()) are
+ * instead attached to a filter or action hook.
+ *
+ * For more information on hooks, actions, and filters,
+ * @link http://codex.wordpress.org/Plugin_API
+ */
 
-/*** Theme setup ***/
+/**
+ * Set up the content width value based on the theme's design.
+ */
+if (!isset($content_width)) {
+	$content_width = 610;
+}
 
-add_theme_support( 'post-thumbnails' );
-add_theme_support( 'automatic-feed-links' );
-
+/**
+ * Sight setup.
+ *
+ * Set up theme defaults and registers support for various WordPress features.
+ *
+ * Note that this function is hooked into the after_setup_theme hook, which
+ * runs before the init hook. The init hook is too late for some features, such
+ * as indicating support post thumbnails.
+ */
 function sight_setup() {
+	/*
+	 * Make Sight available for translation.
+	 *
+	 * Translations can be added to the /languages/ directory.
+	 * If you're building a theme based on Sight, use a find and
+	 * replace to change 'sight' to the name of your theme in all
+	 * template files.
+	 */
+	load_theme_textdomain('sight', get_template_directory().'/languages');
+
+	// Add RSS feed links to <head> for posts and comments.
+	add_theme_support('automatic-feed-links');
+
+	// Enable support for Post Thumbnails
+	add_theme_support('post-thumbnails');
+	add_image_size('mini-thumbnail', 50, 50, true);
+	add_image_size('slide', 640, 290, true);
+
+	// This theme uses wp_nav_menu() in two locations.
+	register_nav_menus(array(
+		'navigation' => __('Navigation', 'sight'),
+		'top_menu' => __('Top menu', 'sight'),
+	));
+
+	/*
+	 * Switch default core markup for search form, comment form, and comments
+	 * to output valid HTML5.
+	 */
+	add_theme_support('html5', array(
+		'search-form', 'comment-form', 'comment-list',
+	));
+
+	// This theme uses its own gallery styles.
+	add_filter('use_default_gallery_style', '__return_false');
+}
+add_action('after_setup_theme', 'sight_setup');
+
+/**
+ * Changes default image size when theme is activated
+ */
+function sight_thumbnail_size() {
 	update_option('thumbnail_size_w', 290);
 	update_option('thumbnail_size_h', 290);
-	add_image_size( 'mini-thumbnail', 50, 50, true );
-	add_image_size( 'slide', 640, 290, true );
-	register_nav_menu('Navigation', __('Navigation', 'sight'));
-	register_nav_menu('Top menu', __('Top menu', 'sight'));
 }
-add_action( 'init', 'sight_setup' );
+add_action('after_switch_theme', 'sight_thumbnail_size');
 
-if ( is_admin() && isset($_GET['activated'] ) && $pagenow == 'themes.php' ) {
-	update_option( 'posts_per_page', 12 );
-	update_option( 'paging_mode', 'default' );
+/**
+ * Enqueue scripts and styles for the front end.
+ *
+ * @return void
+ */
+function sight_scripts() {
+	// Load our main stylesheet.
+	wp_enqueue_style('sight-style', get_stylesheet_uri());
+
+	// Load the Internet Explorer specific stylesheet.
+	wp_enqueue_style('sight-ie', get_template_directory_uri().'/ie.css', array('sight-style'), '20131217');
+	wp_style_add_data('sight-ie', 'conditional', 'IE');
+
+	if (is_singular() && comments_open() && get_option('thread_comments')) {
+		wp_enqueue_script('comment-reply');
+	}
+
+	wp_enqueue_script('cycle', get_template_directory_uri().'/js/jquery.cycle.all.min.js', array('jquery'), '20131219', false);
+	wp_enqueue_script('cookie', get_template_directory_uri().'/js/jquery.cookie.js', array('jquery'), '20131219', false);
+	wp_enqueue_script('script', get_template_directory_uri().'/js/script.js', array('jquery'), '20131219', true);
+}
+add_action('wp_enqueue_scripts', 'sight_scripts');
+
+if (is_admin() && isset($_GET['activated']) && $pagenow == 'themes.php') {
+	update_option('posts_per_page', 12);
+	update_option('paging_mode', 'default');
 }
 
-/*** Navigation ***/
+class extended_walker extends Walker_Nav_Menu {
+	function display_element($element, &$children_elements, $max_depth, $depth = 0, $args, &$output) {
 
-if ( !is_nav_menu('Navigation') || !is_nav_menu('Top menu') ) {
-	$menu_id1 = wp_create_nav_menu('Navigation');
-	$menu_id2 = wp_create_nav_menu('Top menu');
-	wp_update_nav_menu_item($menu_id1, 1);
-	wp_update_nav_menu_item($menu_id2, 1);
-}
-
-class extended_walker extends Walker_Nav_Menu{
-	function display_element( $element, &$children_elements, $max_depth, $depth=0, $args, &$output ) {
-
-		if ( !$element )
+		if (!$element)
 			return;
 
 		$id_field = $this->db_fields['id'];
 
 		//display this element
-		if ( is_array( $args[0] ) )
-			$args[0]['has_children'] = ! empty( $children_elements[$element->$id_field] );
+		if (is_array($args[0]))
+			$args[0]['has_children'] = !empty($children_elements[$element->$id_field]);
 
 		//Adds the 'parent' class to the current item if it has children
-		if( ! empty( $children_elements[$element->$id_field] ) )
-			array_push($element->classes,'parent');
+		if (!empty($children_elements[$element->$id_field]))
+			array_push($element->classes, 'parent');
 
-		$cb_args = array_merge( array(&$output, $element, $depth), $args);
+		$cb_args = array_merge(array(&$output, $element, $depth), $args);
 
 		call_user_func_array(array(&$this, 'start_el'), $cb_args);
 
 		$id = $element->$id_field;
 
 		// descend only when the depth is right and there are childrens for this element
-		if ( ($max_depth == 0 || $max_depth > $depth+1 ) && isset( $children_elements[$id]) ) {
+		if (($max_depth == 0 || $max_depth > $depth + 1) && isset($children_elements[$id])) {
 
-			foreach( $children_elements[ $id ] as $child ){
+			foreach ($children_elements[$id] as $child) {
 
-				if ( !isset($newlevel) ) {
+				if (!isset($newlevel)) {
 					$newlevel = true;
 					//start the child delimiter
-					$cb_args = array_merge( array(&$output, $depth), $args);
+					$cb_args = array_merge(array(&$output, $depth), $args);
 					call_user_func_array(array(&$this, 'start_lvl'), $cb_args);
 				}
-				$this->display_element( $child, $children_elements, $max_depth, $depth + 1, $args, $output );
+				$this->display_element($child, $children_elements, $max_depth, $depth + 1, $args, $output);
 			}
-			unset( $children_elements[ $id ] );
+			unset($children_elements[$id]);
 		}
 
-		if ( isset($newlevel) && $newlevel ){
+		if (isset($newlevel) && $newlevel) {
 			//end the child delimiter
-			$cb_args = array_merge( array(&$output, $depth), $args);
+			$cb_args = array_merge(array(&$output, $depth), $args);
 			call_user_func_array(array(&$this, 'end_lvl'), $cb_args);
 		}
 
 		//end this element
-		$cb_args = array_merge( array(&$output, $element, $depth), $args);
+		$cb_args = array_merge(array(&$output, $element, $depth), $args);
 		call_user_func_array(array(&$this, 'end_el'), $cb_args);
 	}
 }
@@ -741,9 +824,12 @@ function comments_link_attributes(){
 }
 add_filter('comments_popup_link_attributes', 'comments_link_attributes');
 
-function next_posts_attributes(){
+function next_posts_attributes() {
 	return 'class="nextpostslink"';
 }
 add_filter('next_posts_link_attributes', 'next_posts_attributes');
 
-?>
+function prev_posts_attributes() {
+	return 'class="previouspostslink"';
+}
+add_filter('previous_posts_link_attributes', 'prev_posts_attributes');
