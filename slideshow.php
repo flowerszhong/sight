@@ -6,15 +6,15 @@ $args = array(
 );
 $slides = get_posts($args);
 
-if (!empty($slides)): $exl_posts = Array();
+global $exl_posts;
+if (!empty($slides)):
 ?>
 
 <div class="slideshow">
 	<div id="slideshow">
 
-	<?php foreach( $slides as $post ):
+	<?php foreach($slides as $post):
 		setup_postdata($post);
-		global $exl_posts;
 		$exl_posts[] = $post->ID;
 	?>
 

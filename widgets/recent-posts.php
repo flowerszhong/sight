@@ -40,11 +40,12 @@ class Recentposts_thumbnail extends WP_Widget {
 		<a href="<?php the_permalink(); ?>" class="rpthumb clear">
 			<?php if (has_post_thumbnail() && !get_option('rpthumb_thumb')) {
 				the_post_thumbnail('mini-thumbnail');
-				$offset = 'style="padding-left: 65px;"';
+				$offset = ' style="padding-left: 65px;"';
 			}
+			else $offset = '';
 			?>
-			<span class="rpthumb-title" <?php echo $offset; ?>><?php the_title(); ?></span>
-			<span class="rpthumb-date" <?php echo $offset; unset($offset); ?>><?php the_time('M j, Y'); ?></span>
+			<span class="rpthumb-title"<?php echo $offset; ?>><?php the_title(); ?></span>
+			<span class="rpthumb-date"<?php echo $offset; ?>><?php the_time('M j, Y'); ?></span>
 		</a>
 
 		<?php

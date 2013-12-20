@@ -5,11 +5,12 @@
 	<a href="javascript: void(0);" id="mode"<?php if (isset($_COOKIE['mode']) && $_COOKIE['mode'] == 'grid') echo ' class="flip"'; ?>></a>
 </div>
 
-<?php query_posts(array(
-		'post__not_in' => $exl_posts,
-		'paged' => $paged,
-	)
-); ?>
+<?php
+global $exl_posts;
+$args = array('paged' => $paged);
+if (!empty($exl_posts)) $args['post__not_in'] = $exl_posts;
+query_posts($args);
+?>
 
 <?php get_template_part('loop'); ?>
 

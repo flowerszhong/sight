@@ -456,3 +456,5 @@ function prev_posts_attributes() {
 	return 'class="previouspostslink"';
 }
 add_filter('previous_posts_link_attributes', 'prev_posts_attributes');
+
+$exl_posts = array();
