@@ -266,6 +266,8 @@ a.dd_hover:hover {text-decoration: none !important;}
 #respond .commform-author p span, #respond .commform-email p span, #respond .commform-url p span {color: #aaa9a9; font: italic 11px Georgia, Geneva, "Times New Roman", times;}
 #respond .commform-textarea {position: absolute; top: 0; left: 0; width: 100%;}
 #respond .commform-textarea > div {border: 1px solid #d9d9d9; padding: 10px;}
+#respond p.form-submit {margin-bottom: 0;}
+#respond p.form-submit #submit {float:none;}
 #comment {width: 100%; height: 120px; padding: 0; margin: 0; border: none; border-color: #fff; overflow: auto;}
 .commform-author div {margin-right: 15px; border: 1px solid #d9d9d9; padding: 5px;}
 .commform-email div {border: 1px solid #d9d9d9; padding: 5px;}
