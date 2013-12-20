@@ -259,12 +259,13 @@ a.dd_hover:hover {text-decoration: none !important;}
 .nopassword {padding-left: 30px;}
 #respond p a {text-decoration: none;}
 #respond p a:hover {text-decoration: underline;}
-#commentform {padding: 30px 0 0 30px;}
-#commentform table {width: 100%; margin-bottom: 15px;}
-#commentform td {vertical-align: top; width: 33.33%;}
-#commentform td p {font: bold 11px Helvetica, Arial, sans-serif; color: #333; margin-bottom: 5px;}
-#commentform td p span {color: #aaa9a9; font: italic 11px Georgia, Geneva, "Times New Roman", times;}
-.commform-textarea {border: 1px solid #d9d9d9; padding: 10px; margin-bottom: 10px;}
+#commentform {position:relative; margin: 30px 0 0 30px; padding-top: 155px;}
+#respond .comment_message {margin: 10px 0 25px;}
+#respond .commform-author, #respond .commform-email, #respond .commform-url {float: left; width: 33.333333333%; margin-bottom: 15px;}
+#respond .commform-author p, #respond .commform-email p, #respond .commform-url p {font: bold 11px Helvetica, Arial, sans-serif; color: #333; margin-bottom: 5px;}
+#respond .commform-author p span, #respond .commform-email p span, #respond .commform-url p span {color: #aaa9a9; font: italic 11px Georgia, Geneva, "Times New Roman", times;}
+#respond .commform-textarea {position: absolute; top: 0; left: 0; width: 100%;}
+#respond .commform-textarea > div {border: 1px solid #d9d9d9; padding: 10px;}
 #comment {width: 100%; height: 120px; padding: 0; margin: 0; border: none; border-color: #fff; overflow: auto;}
 .commform-author div {margin-right: 15px; border: 1px solid #d9d9d9; padding: 5px;}
 .commform-email div {border: 1px solid #d9d9d9; padding: 5px;}

@@ -26,6 +26,12 @@
 						href="#comments" class="post-comms"><?php comments_number(__('No Comments', 'sight'), __('1 Comment', 'sight'), __('% Comments', 'sight'), '', __('Comments Closed', 'sight') ); ?></a></div>
 				<div class="post-content"><?php the_content(); ?></div>
 				<div class="post-footer"><?php the_tags('<strong>'.__('Tags:', 'sight').' </strong>', ', '); ?></div>
+				<?php wp_link_pages(array(
+					'before' => '<p class="page-links"><span class="page-links-title">'.__('Pages:', 'sight').'</span>',
+					'after' => '</p>',
+					'link_before' => '<span>',
+					'link_after' => '</span>',
+				)); ?>
 			</div>
 			<div class="post-navigation clear">
 				<?php

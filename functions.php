@@ -85,11 +85,11 @@ function sight_thumbnail_size() {
 add_action('after_switch_theme', 'sight_thumbnail_size');
 
 /**
- * Register three Twenty Fourteen widget areas.
+ * Register Sight widget areas.
  *
  * @return void
  */
-function twentyfourteen_widgets_init() {
+function sight_widgets_init() {
 	require get_template_directory().'/widgets/get-connected.php';
 	require get_template_directory().'/widgets/recent-posts.php';
 	register_widget('GetConnected');
@@ -108,7 +108,7 @@ function twentyfourteen_widgets_init() {
 		'after_title' => '</h3><div class="widget-body clear">'
 	));
 }
-add_action('widgets_init', 'twentyfourteen_widgets_init');
+add_action('widgets_init', 'sight_widgets_init');
 
 /**
  * Enqueue scripts and styles for the front end.
@@ -379,46 +379,48 @@ function twittercount($twitter_url = 'http://twitter.com/wpshower') {
 
 function seo_title() {
 	global $page, $paged;
-	$sep = " | "; # delimiter
-	$newtitle = get_bloginfo('name'); # default title
+	$sep = " | "; // delimiter
+	$newtitle = get_bloginfo('name'); // default title
 
-	# Single & Page ##################################
+	// Single & Page
 	if (is_single() || is_page())
 		$newtitle = single_post_title("", false);
 
-	# Category ######################################
+	// Category
 	if (is_category())
 		$newtitle = single_cat_title("", false);
 
-	# Tag ###########################################
+	// Tag
 	if (is_tag())
-	 $newtitle = single_tag_title("", false);
+		$newtitle = single_tag_title("", false);
 
-	# Search result ################################
+	// Search result
 	if (is_search())
 		$newtitle = "Search Result ".get_search_query();
 
-	# Taxonomy #######################################
+	// Taxonomy
 	if (is_tax()) {
 		$curr_tax = get_taxonomy(get_query_var('taxonomy'));
-		$curr_term = get_term_by('slug', get_query_var('term'), get_query_var('taxonomy')); # current term data
-		# if it's term
+		$curr_term = get_term_by('slug', get_query_var('term'), get_query_var('taxonomy')); // current term data
+		// if it's term
 		if (!empty($curr_term)) {
-			$newtitle = $curr_tax->label . $sep . $curr_term->name;
-		} else {
+			$newtitle = $curr_tax->label.$sep.$curr_term->name;
+		}
+		else {
 			$newtitle = $curr_tax->label;
 		}
 	}
 
-	# Page number
+	// Page number
 	if ($paged >= 2 || $page >= 2)
-			$newtitle .= $sep . sprintf('Page %s', max($paged, $page));
+		$newtitle .= $sep.sprintf('Page %s', max($paged, $page));
 
-	# Home & Front Page ########################################
+	// Home & Front Page
 	if (is_home() || is_front_page()) {
-		$newtitle = get_bloginfo('name') . $sep . get_bloginfo('description');
-	} else {
-		$newtitle .= $sep . get_bloginfo('name');
+		$newtitle = get_bloginfo('name').$sep.get_bloginfo('description');
+	}
+	else {
+		$newtitle .= $sep.get_bloginfo('name');
 	}
 	return $newtitle;
 }
@@ -429,19 +431,21 @@ function new_excerpt_length($length) {
 }
 add_filter('excerpt_length', 'new_excerpt_length');
 
-
 function getTinyUrl($url) {
-	$tinyurl = file_get_contents("http://tinyurl.com/api-create.php?url=".$url);
-	return $tinyurl;
+	$remote = wp_remote_get('http://tinyurl.com/api-create.php?url='.$url);
+	if ($remote instanceof WP_Error || $remote['response']['code'] != 200) {
+		return 'tinyurl-error';
+	}
+	return $remote['body'];
 }
 
 function smart_excerpt($string, $limit) {
-	$words = explode(" ",$string);
-	if ( count($words) >= $limit) $dots = '...';
-	echo implode(" ",array_splice($words,0,$limit)).$dots;
+	$words = explode(" ", $string);
+	if (count($words) >= $limit) $dots = '...';
+	echo implode(" ", array_splice($words, 0, $limit)).$dots;
 }
 
-function comments_link_attributes(){
+function comments_link_attributes() {
 	return 'class="comments_popup_link"';
 }
 add_filter('comments_popup_link_attributes', 'comments_link_attributes');

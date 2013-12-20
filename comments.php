@@ -1,8 +1,8 @@
 <?php if ( comments_open() ) : ?>
 <div class="comments">
 	<?php if ( post_password_required() ) : ?>
-					<p class="nopassword"><?php _e('This post is password protected. Enter the password to view any comments.', 'sight'); ?></p>
-				</div><!-- #comments -->
+	<p class="nopassword"><?php _e('This post is password protected. Enter the password to view any comments.', 'sight'); ?></p>
+</div><!-- #comments -->
 	<?php
 			/* Stop the rest of comments.php from being processed,
 			 * but don't kill the script entirely -- we still have
@@ -41,82 +41,30 @@
 
 	<?php if ('open' == $post->comment_status) : ?>
 
-	<div id="respond">
-		<h3>What do you think?</h3>
-		<div class="comment_form">
+		<?php comment_form(array(
+			'must_log_in' => '<p class="comment_message">'
+				.sprintf('You must be <a href="%s">logged in</a> to post a comment.',
+					get_option('siteurl').'/wp-login.php?redirect_to='.urlencode(get_permalink()))
+				.'</p>',
+			'logged_in_as' => '<p class="comment_message">'
+				.sprintf('Logged in as <a href="%s">%s</a>. <a href="%s" title="Log out of this account">Log out &raquo;</a>',
+					get_option('siteurl').'/wp-admin/profile.php',
+					$user_identity,
+					wp_logout_url(get_permalink()))
+				.'</p>',
+			'comment_notes_before' => '',
+			'comment_notes_after' => '',
+			'title_reply' => __('What do you think?', 'portfolium'),
+			'label_submit' => __('Submit', 'portfolium'),
+			'comment_field' => '<div class="commform-textarea"><div><textarea name="comment" id="comment" cols="50" rows="7" tabindex="1"></textarea></div></div>',
+			'fields' => apply_filters('comment_form_default_fields', array(
+				'author' => '<div class="commform-author"><p>Name <span>required</span></p><div><input type="text" name="author" id="author" tabindex="2" /></div></div>',
+				'email' => '<div class="commform-email"><p>Email <span>required</span></p><div><input type="text" name="email" id="email" tabindex="3" /></div></div>',
+				'url' => '<div class="commform-url"><p>Website</p><div><input type="text" name="url" id="url" tabindex="4" /></div></div>'
+			))
+		)); ?>
 
-		<?php if ( get_option('comment_registration') && !$user_ID ) : ?>
-			<p class="comment_message">You must be <a href="<?php echo get_option('siteurl'); ?>/wp-login.php?redirect_to=<?php echo urlencode(get_permalink()); ?>">logged in</a> to post a comment.</p>
-		<?php else : ?>
-
-			<form action="<?php echo get_option('siteurl'); ?>/wp-comments-post.php" method="post" id="commentform">
-
-				<?php if ( $user_ID ) : ?>
-
-					<p class="comment_message">Logged in as <a href="<?php echo get_option('siteurl'); ?>/wp-admin/profile.php"><?php echo $user_identity; ?></a>. <a href="<?php echo wp_logout_url(get_permalink()); ?>" title="Log out of this account">Log out &raquo;</a></p>
-
-					<table>
-						<tr>
-							<td colspan="3">
-								<div class="commform-textarea">
-									<textarea name="comment" id="comment" cols="50" rows="7" tabindex="1"></textarea>
-								</div>
-							</td>
-						</tr>
-					</table>
-
-				<?php else : ?>
-
-					<table>
-						<tr>
-							<td colspan="3">
-								<div class="commform-textarea">
-									<textarea name="comment" id="comment" cols="50" rows="7" tabindex="1"></textarea>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td class="commform-author">
-								<p>Name <span>required</span></p>
-								<div>
-									<input type="text" name="author" id="author" tabindex="2" />
-								</div>
-							</td>
-							<td class="commform-email">
-								<p>Email <span>required</span></p>
-								<div>
-									<input type="text" name="email" id="email" tabindex="3" />
-								</div>
-							</td>
-							<td class="commform-url">
-								<p>Website</p>
-								<div>
-									<input type="text" name="url" id="url" tabindex="4" />
-								</div>
-							</td>
-						</tr>
-					</table>
-
-				<?php endif; ?>
-
-				<!--<p class="comment_message"><small><strong>XHTML:</strong> You can use these tags: <code><?php echo allowed_tags(); ?></code></small></p>-->
-
-				<div class="submit clear">
-					<input name="submit" type="submit" id="submit" tabindex="5" value="Submit" />
-					<p id="cancel-comment-reply"><?php cancel_comment_reply_link() ?></p>
-				</div>
-					
-				<div><?php comment_id_fields(); ?><?php do_action('comment_form', $post->ID); ?></div>
-
-			</form>
-
-		<?php endif; // If registration required and not logged in ?>
-
-		</div>
-
-		<?php endif; // if you delete this the sky will fall on your head ?>
-
-	</div>
+	<?php endif; ?>
 
 </div>
 <?php endif; // end ! comments_open() ?>
