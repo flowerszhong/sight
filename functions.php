@@ -216,8 +216,6 @@ add_action('add_meta_boxes', 'sight_add_box');
 
 // Save data from meta box
 function sight_save_data($post_id) {
-	global $meta_box;
-
 	// verify nonce
 	if (!wp_verify_nonce($_POST['sight_meta_box_nonce'], basename(__FILE__))) {
 		return $post_id;
@@ -238,16 +236,14 @@ function sight_save_data($post_id) {
 		return $post_id;
 	}
 
-	foreach ($meta_box['fields'] as $field) {
-		$old = get_post_meta($post_id, $field['id'], true);
-		$new = $_POST[$field['id']];
+	$old = get_post_meta($post_id, 'sgt_slide', true);
+	$new = $_POST['sgt_slide'];
 
-		if ($new && $new != $old) {
-			update_post_meta($post_id, $field['id'], $new);
-		}
-		elseif ('' == $new && $old) {
-			delete_post_meta($post_id, $field['id'], $old);
-		}
+	if ($new && $new != $old) {
+		update_post_meta($post_id, 'sgt_slide', $new);
+	}
+	elseif ('' == $new && $old) {
+		delete_post_meta($post_id, 'sgt_slide', $old);
 	}
 }
 add_action('save_post', 'sight_save_data');
