@@ -13,12 +13,13 @@ if (!empty($slides)):
 <div class="slideshow">
 	<div id="slideshow">
 
-	<?php foreach($slides as $post):
+	<?php foreach($slides as $key => $post):
 		setup_postdata($post);
 		$exl_posts[] = $post->ID;
+
 	?>
 
-		<div class="slide clear">
+		<div class="slide <?php echo 'slide-color-' . $key; ?> clear">
 			<div class="post">
 				<?php if (has_post_thumbnail()) echo '<a href="'.get_permalink().'">'.get_the_post_thumbnail($post->ID, 'slide',
 					array(

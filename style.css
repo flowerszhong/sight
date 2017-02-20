@@ -61,7 +61,7 @@ body {font: 62.5% Georgia, Geneva, "Times New Roman", times; background: #27292a
 .dd li {float: left; display: block; border-left: 1px solid #d9d9d9; text-align: center; font-size: 13px; text-transform: uppercase;}
 .dd li a {color: #000; text-decoration: none; display: block; padding-top: 18px; margin: 0 14px; white-space: nowrap;}
 .dd li a:hover {text-decoration: underline;}
-.dd li ul {position: absolute; padding: 8px 0 10px; visibility: hidden; background: #000; z-index: 100;}
+.dd li ul {position: absolute; padding: 8px 0 10px; visibility: hidden; background: #000; z-index: 100;min-width:100px;}
 .dd li ul li {float: none; border: none; font-size: 11px; text-align: left; margin: 5px 0; padding: 0 8px;}
 .dd li ul li a {color: #fff; display: inline; margin: 0 !important; white-space: normal; padding-top: 0;}
 .dd li.dd_hover {background: #000;}
@@ -88,6 +88,13 @@ a.dd_hover:hover {text-decoration: none !important;}
 .slide .post .post-meta a:hover {text-decoration: underline;}
 .slide .post .post-author {text-transform: uppercase;}
 .slide .post-content p {margin-bottom: 15px;}
+.slide-color-1{background-color: #ff5e5c;}
+.slide-color-1 *{color:#fff!important;}
+.slide-color-2{background-color: darkgreen;}
+.slide-color-2 *{color:#fff!important;}
+.slide-color-3{background-color: purple;}
+.slide-color-3 *{color:#fff!important;}
+.slide-color-4{background-color: lightblue;}
 #larr, #rarr {display: block; width: 32px; height: 53px; position: absolute; top: 106px !important; opacity: 0.2; z-index: 99 !important;}
 #larr {background: #000 url("images/larr.png") 8px 50% no-repeat; left: 0 !important;}
 #rarr {background: #000 url("images/rarr.png") 11px 50% no-repeat; right: 0 !important;}
