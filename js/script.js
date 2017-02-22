@@ -122,7 +122,7 @@ jQuery.noConflict();
 
 		/*** Ajax-fetching posts ***/
 
-		$('#pagination a').live('click', function(e){
+		$('#pagination').on('click', 'a', function(e) {
 			e.preventDefault();
 			$(this).addClass('loading').text('LOADING...');
 			$.ajax({

@@ -23,10 +23,7 @@
 		<?php endif; ?>
 	</head>
 	<body <?php body_class(); ?><?php echo (get_option('bg_color')) ? 'style="background-color: '.get_option('bg_color').';"' : '' ?>>
-		<?php if (!function_exists('dynamic_sidebar') || !dynamic_sidebar('topbar_ad')){
-			get_sidebar('topbar_ad');
-		}
-		?>
+		<?php dynamic_sidebar('topbar_ad'); ?>
 		<div class="wrapper">
 			<div class="header clear">
 				<div class="logo">

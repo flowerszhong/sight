@@ -346,3 +346,7 @@ ul#nav-bottom-menu li {
 p.copyright {float: left; color: #333;}
 p.copyright span {color: #737373;}
 .credits {float: right;}
+
+.textwidget img{
+	max-width: 100%;
+}
