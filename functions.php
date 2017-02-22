@@ -60,6 +60,7 @@ function sight_setup() {
 	register_nav_menus(array(
 		'navigation' => __('Navigation', 'sight'),
 		'top_menu' => __('Top menu', 'sight'),
+		'bottom_menu' => __('Bottom menu', 'sight'),
 	));
 
 	/*
@@ -95,6 +96,12 @@ function sight_widgets_init() {
 	register_sidebar(array(
 		'name' => __('Site description', 'sight'),
 		'before_widget' => '<div class="site-description">',
+		'after_widget' => '</div>'
+	));
+
+	register_sidebar(array(
+		'name' => __('topbar_ad', 'sight'),
+		'before_widget' => '<div class="wrapper site-topbar">',
 		'after_widget' => '</div>'
 	));
 	register_sidebar(array(
@@ -188,7 +195,7 @@ class extended_walker extends Walker_Nav_Menu {
 // Callback function to show fields in meta box
 function sight_show_box() {
 	global $post;
-	$field = array('name' => 'Show in slideshow', 'id' => 'sgt_slide', 'type' => 'checkbox');
+	$field = array('name' => '显示为幻灯片', 'id' => 'sgt_slide', 'type' => 'checkbox');
 	// get current post meta data
 	$meta = get_post_meta($post->ID, $field['id'], true);
 
@@ -455,3 +462,167 @@ function prev_posts_attributes() {
 add_filter('previous_posts_link_attributes', 'prev_posts_attributes');
 
 $exl_posts = array();
+
+
+
+
+function dz_get_meta( $value ) {
+
+    global $post;
+
+
+
+    $field = get_post_meta( $post->ID, $value, true );
+
+    if ( ! empty( $field ) ) {
+
+        return is_array( $field ) ? stripslashes_deep( $field ) : stripslashes( wp_kses_decode_entities( $field ) );
+
+    } else {
+
+        return false;
+
+    }
+
+}
+
+
+
+function dz_add_meta_box() {
+
+    add_meta_box(
+
+        'dzxfsc',
+
+        '自定义封面图片',
+
+        'dz_html',
+
+        'post',
+
+        'normal',
+
+        'default'
+
+    );
+
+}
+
+add_action( 'add_meta_boxes', 'dz_add_meta_box' );
+
+
+
+function dz_html( $post) {
+
+    wp_nonce_field( '_dzxf_nonce', 'dzxf_nonce' ); ?>
+
+    <p>如果未找到 特色图片(Featured Image),退而求其次会找到 自定义封面图片</p>
+
+
+
+    <p>
+
+        <label for="dz_thumbnail">自定义封面图片，如：http://a.com/a.jpg</label><br>
+
+        <input type="text" class='widefat' name="dz_thumbnail" id="dz_thumbnail" value="<?php echo dz_get_meta( 'dz_thumbnail' ); ?>">
+
+    </p><?php
+
+}
+
+
+
+function dz_save( $post_id ) {
+
+    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
+
+    if ( ! isset( $_POST['dz_nonce'] ) || ! wp_verify_nonce( $_POST['dz_nonce'], '_dz_nonce' ) ) return;
+
+    if ( ! current_user_can( 'edit_post', $post_id ) ) return;
+
+
+
+    if ( isset( $_POST['dz_thumbnail'] ) )
+
+        update_post_meta( $post_id, 'dz_thumbnail', esc_attr( $_POST['dz_thumbnail'] ) );
+
+}
+
+add_action( 'save_post', 'dz_save' );
+
+
+
+function get_post_img( $id = null,$width="200",$height="150",$size=null) {
+
+    if( $id ){
+
+        $post = get_post($id);
+
+        $post_id = $id;
+
+    }else{
+
+        global $post;
+
+        $post_id = $post->ID;
+
+    }
+
+
+
+
+
+    if(has_post_thumbnail( $post )){
+
+        set_post_thumbnail_size( $width, $height );
+
+
+
+        if($size){
+
+            $attachment_id = get_post_thumbnail_id( $post_id );
+
+            $thumb_url = wp_get_attachment_image_src( $attachment_id, $size ,true);
+
+            return $thumb_url[0];
+
+        }
+
+        return get_the_post_thumbnail_url( $post);
+
+    }
+
+
+
+    if(dz_get_meta( 'dz_thumbnail' )){
+
+        return dz_get_meta( 'dz_thumbnail' );
+
+    }
+
+
+
+
+
+    $output = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $post->post_content, $matches);
+
+    if( !empty( $matches[1][0] ) ){
+
+        return $matches[1][0];
+
+    }else{
+
+        $width_height = $width . 'x' . $height;
+
+        return 'http://fpoimg.com/' . $width_height;
+
+    }
+
+}
+
+
+
+
+
+
+

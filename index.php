@@ -1,7 +1,7 @@
 <?php get_header(); ?>
 
 <div class="content-title">
-	<?php _e('Latest entries', 'sight'); ?>
+	<?php _e('最近更新', 'sight'); ?>
 	<a href="javascript: void(0);" id="mode"<?php if (isset($_COOKIE['mode']) && $_COOKIE['mode'] == 'grid') echo ' class="flip"'; ?>></a>
 </div>
 
